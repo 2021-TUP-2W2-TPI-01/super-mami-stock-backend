@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'control_stock_app',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
     
 ]
 
