@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from .serializers import *
 from .data_access import db_helper as _db
-
+from .models import *
+from rest_framework.authtoken.models import Token
 
 @api_view(['POST'])
 def login(request):
