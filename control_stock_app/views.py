@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.db import connection
+import rest_framework
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
@@ -32,3 +34,33 @@ def login(request):
         return Response(_user_info, status=status.HTTP_200_OK)
     except:
         return Response('Server Error',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# ---------- Gestion de usuarios ----------- #
+class Usuario(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+
+    def get(self, request, pk): 
+        
+        pass
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+        
+        pass
+
+    def delete(self, request, pk):
+
+        pass
+
+@api_view(['GET'])
+def get_usuarios(request):
+
+    pass
+
+# ---------------------------------------------- #
