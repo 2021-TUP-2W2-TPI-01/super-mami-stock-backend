@@ -11,6 +11,7 @@ from .serializers import *
 from .data_access import db_helper as _db
 from .models import *
 from rest_framework.authtoken.models import Token
+from .controllers.usuario_controller import *
 
 @api_view(['POST'])
 def login(request):
@@ -61,6 +62,10 @@ class Usuario(APIView):
 @api_view(['GET'])
 def get_usuarios(request):
 
-    pass
+    usuarios = obtener_usuarios()
+
+    reponse = UserSerializer(usuarios, many=True)
+
+    return Response(reponse.data, status=status.HTTP_200_OK)
 
 # ---------------------------------------------- #
