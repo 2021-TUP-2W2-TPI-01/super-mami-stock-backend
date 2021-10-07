@@ -23,18 +23,12 @@ class Articulos(models.Model):
     cantidad_medida = models.FloatField(blank=True, null=True)
     activo = models.BooleanField(default=True)
 
+    def is_activo(self):
+        return bool(ord(self.activo))
+
     class Meta:
         managed = False
         db_table = 'articulos'
-
-
-class Barrios(models.Model):
-    descripcion = models.CharField(max_length=50)
-    id_localidad = models.ForeignKey('Localidades', models.DO_NOTHING, db_column='id_localidad', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'barrios'
 
 
 class Categorias(models.Model):
@@ -49,10 +43,13 @@ class Depositos(models.Model):
     nombre = models.CharField(max_length=50, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=True, null=True)
     domicilio = models.CharField(max_length=50, blank=True, null=True)
+    barrio = models.CharField(max_length=50, blank=True, null=True)
+    id_localidad = models.ForeignKey('Localidades', models.DO_NOTHING, db_column='id_localidad', blank=True, null=True)
     id_encargado = models.ForeignKey(User, models.DO_NOTHING, db_column='id_encargado', blank=True, null=True)
-    id_barrio = models.ForeignKey(Barrios, models.DO_NOTHING, db_column='id_barrio', blank=True, null=True)
-    activo = models.BooleanField(default=True)
+    activo = models.BooleanField(default=True)  # This field type is a guess.
 
+    def is_activo(self):
+        return bool(ord(self.activo))
     class Meta:
         managed = False
         db_table = 'depositos'
@@ -82,7 +79,7 @@ class Existencias(models.Model):
 
 
 class Localidades(models.Model):
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
