@@ -7,4 +7,9 @@ def obtener_usuarios():
     usuarios = User.objects.all()
 
     return usuarios
-    
+
+def obtener_roles():
+
+    roles = TiposRol.objects.all()
+
+    return roles

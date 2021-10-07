@@ -1,3 +1,4 @@
+from django.http import response
 from django.shortcuts import render
 from django.db import connection
 import rest_framework
@@ -68,4 +69,12 @@ def get_usuarios(request):
 
     return Response(reponse.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_tipos_rol(request):
+
+    roles = obtener_roles()
+
+    response = TiposRolSerializer(roles, many = True)
+
+    return Response(response.data, status = status.HTTP_200_OK)
 # ---------------------------------------------- #
