@@ -10,6 +10,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.db.models.fields.related import ForeignKey
 
 
 class Articulos(models.Model):
@@ -144,3 +145,21 @@ class UnidadesMedida(models.Model):
         managed = False
         db_table = 'unidades_medida'
 
+class RolesUsuarios(models.Model):
+    id_usuario = models.OneToOneField(User, models.DO_NOTHING, db_column='id_usuario', primary_key=True)
+    id_tipo_rol = models.ForeignKey('TiposRol', models.DO_NOTHING, db_column='id_tipo_rol', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'roles_usuarios'
+
+
+class Usuario(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    usuario = models.CharField(max_length=150)
+    nombre = models.CharField(max_length=150)
+    apellido = models.CharField(max_length=150)
+    email = models.EmailField()
+    ult_conexion = models.DateTimeField()
+    rol = models.CharField(max_length=50)
