@@ -1,4 +1,3 @@
-from logging import exception
 from django.http import response
 from django.shortcuts import render
 from django.db import connection
@@ -102,4 +101,6 @@ def get_tipos_rol(request):
     response = TiposRolSerializer(roles, many=True)
 
     return Response(response.data, status=status.HTTP_200_OK)
+  
 # ---------------------------------------------- #
+

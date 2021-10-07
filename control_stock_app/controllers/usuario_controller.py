@@ -39,7 +39,15 @@ def obtener_usuarios():
 
     return lstUsuarios
     
+
+def obtener_roles():
+
+    roles = TiposRol.objects.all()
+
+    return roles
+    
     
 def delete_usuario(pk):
 
     User.objects.filter(id = pk).update(is_active = 0)
+
