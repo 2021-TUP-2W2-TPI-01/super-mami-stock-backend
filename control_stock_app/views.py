@@ -96,10 +96,13 @@ def get_usuarios(request):
 @api_view(['GET'])
 def get_tipos_rol(request):
 
-    roles = obtener_roles()
+    try:
+        roles = obtener_roles()
 
-    response = TiposRolSerializer(roles, many=True)
-
+        response = TiposRolSerializer(roles, many=True)
+    except:
+        return Response('No fue posible obtener los tipos de rol', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
     return Response(response.data, status=status.HTTP_200_OK)
   
 # ---------------------------------------------- #
