@@ -52,9 +52,7 @@ class Usuario(APIView):
         pass
 
     def post(self, request):
-        
-        pass
-
+        return alta_usuario(request)
     def delete(self, request, pk):
 
         pass
