@@ -5,6 +5,7 @@ from rest_framework.utils import model_meta
 from control_stock_app.models import TiposRol
 
 
+
 class UserSerializer(serializers.Serializer):
 
     id = serializers.IntegerField()
@@ -21,3 +22,4 @@ class TiposRolSerializer(serializers.ModelSerializer):
     class Meta:
         model = TiposRol
         fields = '__all__'
+
