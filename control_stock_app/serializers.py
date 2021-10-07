@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
+from django.db.models import fields
 from rest_framework import serializers
 from rest_framework.utils import model_meta
+
 
 class UserSerializer(serializers.Serializer):
 
@@ -11,3 +13,4 @@ class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     ult_conexion = serializers.DateTimeField()
     rol = serializers.CharField(max_length=50)
+

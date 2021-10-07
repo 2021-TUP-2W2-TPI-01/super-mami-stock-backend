@@ -1,3 +1,5 @@
+from logging import exception
+from django.http import response
 from django.shortcuts import render
 from django.db import connection
 import rest_framework
@@ -12,6 +14,7 @@ from .data_access import db_helper as _db
 from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
+
 
 @api_view(['POST'])
 def login(request):
@@ -40,9 +43,11 @@ def login(request):
                                                  })
 
         return Response(_user_info, status=status.HTTP_200_OK)
+
     except Exception as e:
         print(e)
         return Response('Server Error',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 # ---------- Gestion de usuarios ----------- #
@@ -51,8 +56,8 @@ class Usuario(APIView):
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
 
-    def get(self, request, pk): 
-        
+    def get(self, request, pk):
+
         pass
 
     def put(self, request, pk):
@@ -60,12 +65,20 @@ class Usuario(APIView):
         pass
 
     def post(self, request):
-        
+
         pass
+
 
     def delete(self, request, pk):
 
-        pass
+        try:
+            delete_usuario(pk)
+
+        except:
+            return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response('Usuario dado de baja exitosamente', status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def get_usuarios(request):
@@ -80,4 +93,13 @@ def get_usuarios(request):
         print (f'Error: {e}' )
         return Response('No fue posible obtener usuarios', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+@api_view(['GET'])
+def get_tipos_rol(request):
+
+    roles = obtener_roles()
+
+    response = TiposRolSerializer(roles, many=True)
+
+    return Response(response.data, status=status.HTTP_200_OK)
 # ---------------------------------------------- #
