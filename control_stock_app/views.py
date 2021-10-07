@@ -16,7 +16,7 @@ from .controllers.usuario_controller import *
 @api_view(['POST'])
 def login(request):
     try:
-        _username = request.POST['username']
+        _username = request.POST['usuario']
         _password = request.POST['password']
 
         try:
@@ -28,12 +28,20 @@ def login(request):
         except Exception as ex:
             return Response('Error al intentar autentificar', status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            _token = Token.objects.get(user=request.user)
+        except Token.DoesNotExist:
+            _token = Token.objects.create(user=request.user)
+
         _user_info = _db.get_data_from_procedure(connection=connection,
-                                                 proc_name='sp_get_user_info')
-        _response = UserSerializer(_objUser, many=False)
+                                                 proc_name='sp_get_user_info',
+                                                 proc_params={
+                                                     'id': _objUser.id
+                                                 })
 
         return Response(_user_info, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        print(e)
         return Response('Server Error',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
