@@ -59,11 +59,15 @@ class Usuario(APIView):
 
 @api_view(['GET'])
 def get_usuarios(request):
+    try:
 
-    usuarios = obtener_usuarios()
+        usuarios = obtener_usuarios()
 
-    reponse = UserSerializer(usuarios, many=True)
+        reponse = UserSerializer(usuarios, many=True)
 
-    return Response(reponse.data, status=status.HTTP_200_OK)
+        return Response(reponse.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print (f'Error: {e}' )
+        return Response('No fue posible obtener usuarios', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # ---------------------------------------------- #
