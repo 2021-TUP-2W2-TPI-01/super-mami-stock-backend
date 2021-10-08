@@ -71,7 +71,7 @@ class Usuario(APIView):
                 _first_name = request.POST['_first_name']
             except:
                 pass
-            if _username != None and _password != None:
+            if _username != None and _username != "" and _password != None and _password != "":
                 if alta_usuario(username=_username, password=_password, email=_email,
                                     last_name=_last_name, first_name=_first_name):
                     return Response('Usuarios creados correctamente', status=status.HTTP_201_CREATED)
