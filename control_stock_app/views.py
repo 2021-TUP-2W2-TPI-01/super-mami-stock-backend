@@ -50,6 +50,7 @@ def login(request):
 
 
 
+
 # ---------- Gestion de usuarios ----------- #
 class Usuario(APIView):
     """
@@ -65,12 +66,37 @@ class Usuario(APIView):
         pass
 
     def post(self, request):
-
-        pass
+        try:
+            _username = request.POST['username']
+            _password = request.POST['password']
+            _email = ""
+            _last_name = ""
+            _first_name = ""
+            try:
+                _email = request.POST['email']
+            except:
+                pass
+            try:
+                _last_name = request.POST['last_name']
+            except:
+                pass
+            try:
+                _first_name = request.POST['_first_name']
+            except:
+                pass
+            if _username != None and _username != "" and _password != None and _password != "":
+                if alta_usuario(username=_username, password=_password, email=_email,
+                                    last_name=_last_name, first_name=_first_name):
+                    return Response('Usuarios creados correctamente', status=status.HTTP_201_CREATED)
+                else:
+                    return Response('Existe un usuario con ese username, reintente', status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def delete(self, request, pk):
-
         try:
             delete_usuario(pk)
 
@@ -78,6 +104,8 @@ class Usuario(APIView):
             return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response('Usuario dado de baja exitosamente', status=status.HTTP_200_OK)
+
+
 
 
 @api_view(['GET'])
@@ -90,8 +118,9 @@ def get_usuarios(request):
 
         return Response(reponse.data, status=status.HTTP_200_OK)
     except Exception as e:
-        print (f'Error: {e}' )
+        print(f'Error: {e}')
         return Response('No fue posible obtener usuarios', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 @api_view(['GET'])
@@ -105,6 +134,7 @@ def get_tipos_rol(request):
         return Response('No fue posible obtener los tipos de rol', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     return Response(response.data, status=status.HTTP_200_OK)
+  
   
 # ---------- Gestion de depósitos -------------- #
 class Deposito(APIView):
@@ -124,6 +154,7 @@ class Deposito(APIView):
         pass
 
 
+
     def delete(self, request, pk):
 
         pass
@@ -140,3 +171,4 @@ def get_localidades(request):
         return Response('No fue posible obtener las localidades', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status=status.HTTP_200_OK)
+

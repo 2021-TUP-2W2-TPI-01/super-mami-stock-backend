@@ -1,5 +1,4 @@
 # Aca van los metodos referidos a usuarios (obtener un usuario, obtener todos los usuarios, alta usuario, baja usuario, modificacion usuario)
-from django.http import response
 from ..models import *
 from django.contrib.auth.models import User
 
@@ -38,6 +37,21 @@ def obtener_usuarios():
         
 
     return lstUsuarios
+
+
+def alta_usuario(**args):
+    _username = args.get('username')
+    _password = args.get('password')
+    _email = args.get('email')
+    _last_name = args.get('last_name')
+    _first_name = args.get('first_name')
+    try:
+        User.objects.create(username = _username, password = _password,email= _email,
+        last_name = _last_name, first_name = _first_name)
+        return True
+    except:
+        return False
+                
     
 
 def obtener_roles():
