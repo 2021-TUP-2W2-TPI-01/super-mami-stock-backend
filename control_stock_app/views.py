@@ -44,6 +44,9 @@ def login(request):
                                                      'id': _objUser.id
                                                  })
 
+        if len(_user_info) > 0:
+            _user_info = _user_info[0]
+
         return Response(_user_info, status=status.HTTP_200_OK)
 
     except Exception as e:
