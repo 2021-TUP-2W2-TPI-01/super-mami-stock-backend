@@ -2,7 +2,7 @@ from django.http import response
 from django.shortcuts import render
 from django.db import connection
 import rest_framework
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,6 +17,8 @@ from .controllers.deposito_controller import *
 
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def login(request):
     try:
         _username = request.POST['usuario']
@@ -32,9 +34,9 @@ def login(request):
             return Response('Error al intentar autentificar', status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            _token = Token.objects.get(user=request.user)
+            _token = Token.objects.get(user=_objUser)
         except Token.DoesNotExist:
-            _token = Token.objects.create(user=request.user)
+            _token = Token.objects.create(user=_objUser)
 
         _user_info = _db.get_data_from_procedure(connection=connection,
                                                  proc_name='sp_get_user_info',
