@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.db.models import fields
 from rest_framework import serializers
 from rest_framework.utils import model_meta
-from control_stock_app.models import TiposRol
+from control_stock_app import models
+from control_stock_app.models import Localidades, TiposRol
 
 
 
@@ -23,3 +24,9 @@ class TiposRolSerializer(serializers.ModelSerializer):
         model = TiposRol
         fields = '__all__'
 
+
+class LocalidadesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Localidades
+        fields = '__all__'

@@ -12,6 +12,7 @@ urlpatterns = [
     
     path('tipos-rol/', views.get_tipos_rol), #Obtener todos los tipos_rol, llega a través de GET
 
-    # ---------------------------------------------- #
-    
+    # ---------- Gestion de depósitos ---------- #
+
+    path('localidades/', views.get_localidades), #Obtener todas las localidades, llega a través de GET 
 ]

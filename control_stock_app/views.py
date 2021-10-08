@@ -13,6 +13,7 @@ from .data_access import db_helper as _db
 from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
+from .controllers.deposito_controller import *
 
 
 @api_view(['POST'])
@@ -134,6 +135,40 @@ def get_tipos_rol(request):
         
     return Response(response.data, status=status.HTTP_200_OK)
   
-# ---------------------------------------------- #
+  
+# ---------- Gestion de depósitos -------------- #
+class Deposito(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+    def get(self, request, pk):
 
+        pass
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+
+        pass
+
+
+
+    def delete(self, request, pk):
+
+        pass
+
+
+@api_view(['GET'])
+def get_localidades(request):
+    try:
+        localidades = obtener_localidades()
+
+        response = LocalidadesSerializer(localidades, many=True)
+
+    except:
+        return Response('No fue posible obtener las localidades', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
 
