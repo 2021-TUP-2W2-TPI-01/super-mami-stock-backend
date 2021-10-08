@@ -13,6 +13,7 @@ from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 
+
 @api_view(['POST'])
 def login(request):
     try:
@@ -34,7 +35,7 @@ def login(request):
 
         return Response(_user_info, status=status.HTTP_200_OK)
     except:
-        return Response('Server Error',status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # ---------- Gestion de usuarios ----------- #
@@ -43,8 +44,8 @@ class Usuario(APIView):
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
 
-    def get(self, request, pk): 
-        
+    def get(self, request, pk):
+
         pass
 
     def put(self, request, pk):
@@ -66,24 +67,23 @@ class Usuario(APIView):
                 _last_name = request.POST['last_name']
             except:
                 pass
-            try: 
+            try:
                 _first_name = request.POST['_first_name']
             except:
                 pass
-            try:
-                if _username != None and _password != None:
-                    if alta_usuario(username = _username, password = _password,email= _email,
-                    last_name = _last_name, first_name = _first_name):
-                        return Response('Usuarios creados correctamente', status=status.HTTP_201_CREATED)
+            if _username != None and _password != None:
+                if alta_usuario(username=_username, password=_password, email=_email,
+                                    last_name=_last_name, first_name=_first_name):
+                    return Response('Usuarios creados correctamente', status=status.HTTP_201_CREATED)
                 else:
-                    return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
-            except Exception as ex:
-                    print(ex)
                     return Response('Existe un usuario con ese username, reintente', status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-                return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     def delete(self, request, pk):
         pass
+
 
 @api_view(['GET'])
 def get_usuarios(request):
@@ -95,7 +95,7 @@ def get_usuarios(request):
 
         return Response(reponse.data, status=status.HTTP_200_OK)
     except Exception as e:
-        print (f'Error: {e}' )
+        print(f'Error: {e}')
         return Response('No fue posible obtener usuarios', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # ---------------------------------------------- #
