@@ -159,10 +159,14 @@ class Deposito(APIView):
         pass
 
 
-
     def delete(self, request, pk):
+        try:
+            delete_deposito(pk)
 
-        pass
+        except:
+            return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response('Depósito dado de baja exitosamente', status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
