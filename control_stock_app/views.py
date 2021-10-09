@@ -170,6 +170,19 @@ class Deposito(APIView):
 
 
 @api_view(['GET'])
+def get_depositos(request):
+    try:
+        depositos = obtener_depositos()
+
+        response = DepositosSerializer(depositos, many=True)
+        
+    except:
+        return Response('No fue posible obtener depositos', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 def get_localidades(request):
     try:
         localidades = obtener_localidades()

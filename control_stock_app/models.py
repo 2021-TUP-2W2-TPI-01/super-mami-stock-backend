@@ -163,7 +163,20 @@ class Usuario(models.Model):
     rol = models.CharField(max_length=50)
 
 
+
+class DepositoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50)
+    domicilio = models.CharField(max_length=50)
+    barrio = models.CharField(max_length=50)
+    localidad = models.CharField(max_length=50)
+    encargado = models.CharField(max_length=50)
+
+    
 class EncargadoDto(models.Model):
 
     id = models.IntegerField(primary_key=True),
     descripcion = models.CharField(max_length=100)
+
