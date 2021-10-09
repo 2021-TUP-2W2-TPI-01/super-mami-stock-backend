@@ -14,5 +14,9 @@ urlpatterns = [
 
     # ---------- Gestion de depósitos ---------- #
 
+
+    path('deposito/', views.Deposito.as_view()), # Alta de depósito, llega a través de POST
+
+
     path('localidades/', views.get_localidades), #Obtener todas las localidades, llega a través de GET 
 ]
