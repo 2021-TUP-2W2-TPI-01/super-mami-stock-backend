@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.db.models import fields
+from django.db.models.base import Model
 from rest_framework import serializers
 from rest_framework.utils import model_meta
 from control_stock_app import models
-from control_stock_app.models import Localidades, TiposRol
+from control_stock_app.models import EncargadoDto, Localidades, TiposRol
 
 
 
@@ -29,4 +30,11 @@ class LocalidadesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Localidades
+        fields = '__all__'
+
+
+class EncargadosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EncargadoDto
         fields = '__all__'

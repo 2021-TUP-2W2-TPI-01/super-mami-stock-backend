@@ -10,6 +10,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.db.models.fields import CharField
 from django.db.models.fields.related import ForeignKey
 
 
@@ -160,3 +161,9 @@ class Usuario(models.Model):
     email = models.EmailField()
     ult_conexion = models.DateTimeField()
     rol = models.CharField(max_length=50)
+
+
+class EncargadoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True),
+    descripcion = models.CharField(max_length=100)
