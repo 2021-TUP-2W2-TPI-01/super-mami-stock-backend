@@ -10,6 +10,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.db.models.fields import CharField
 from django.db.models.fields.related import ForeignKey
 
 
@@ -162,6 +163,7 @@ class Usuario(models.Model):
     rol = models.CharField(max_length=50)
 
 
+
 class DepositoDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
@@ -171,3 +173,10 @@ class DepositoDto(models.Model):
     barrio = models.CharField(max_length=50)
     localidad = models.CharField(max_length=50)
     encargado = models.CharField(max_length=50)
+
+    
+class EncargadoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True),
+    descripcion = models.CharField(max_length=100)
+

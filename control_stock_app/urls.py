@@ -14,8 +14,17 @@ urlpatterns = [
 
     # ---------- Gestion de depósitos ---------- #
 
+
     path('depositos/', views.get_depositos), # Obtener todos los depósitos, llega a través de un GET
 
 
+    path('deposito/<int:pk>/', views.Deposito.as_view()), # Consulta, Baja y Modificación de un depósito, llega a través de GET, DELETE y PUT. El parámetro que se recibe en la URL es la pk del mismo
+
+
+
+
     path('localidades/', views.get_localidades), #Obtener todas las localidades, llega a través de GET 
+
+
+    path('encargados/', views.get_encargados), #Obtener todos los encargados, llega a través de GET
 ]
