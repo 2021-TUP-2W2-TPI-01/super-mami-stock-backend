@@ -14,5 +14,8 @@ urlpatterns = [
 
     # ---------- Gestion de depósitos ---------- #
 
+    path('depositos/', views.get_depositos), # Obtener todos los depósitos, llega a través de un GET
+
+
     path('localidades/', views.get_localidades), #Obtener todas las localidades, llega a través de GET 
 ]
