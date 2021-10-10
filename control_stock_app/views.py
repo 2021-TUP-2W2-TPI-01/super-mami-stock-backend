@@ -1,8 +1,10 @@
+from logging import fatal
 from django.http import response
 from django.shortcuts import render
 from django.db import connection
 import rest_framework
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,9 +15,12 @@ from .data_access import db_helper as _db
 from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
+from .controllers.deposito_controller import *
 
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def login(request):
     try:
         _username = request.POST['usuario']
@@ -31,15 +36,18 @@ def login(request):
             return Response('Error al intentar autentificar', status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            _token = Token.objects.get(user=request.user)
+            _token = Token.objects.get(user=_objUser)
         except Token.DoesNotExist:
-            _token = Token.objects.create(user=request.user)
+            _token = Token.objects.create(user=_objUser)
 
         _user_info = _db.get_data_from_procedure(connection=connection,
                                                  proc_name='sp_get_user_info',
                                                  proc_params={
                                                      'id': _objUser.id
                                                  })
+
+        if len(_user_info) > 0:
+            _user_info = _user_info[0]
 
         return Response(_user_info, status=status.HTTP_200_OK)
 
@@ -57,8 +65,16 @@ class Usuario(APIView):
     """
 
     def get(self, request, pk):
+        try:
+            usuario = obtener_usuario(pk)
 
-        pass
+            response = UsuarioSerializer(usuario)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def put(self, request, pk):
 
@@ -97,7 +113,9 @@ class Usuario(APIView):
             else:
                 return Response('Debe ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(e)
+            return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
     def delete(self, request, pk):
@@ -139,6 +157,111 @@ def get_tipos_rol(request):
         
     return Response(response.data, status=status.HTTP_200_OK)
   
-# ---------------------------------------------- #
+  
+# ---------- Gestion de depósitos -------------- #
+class Deposito(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+    def get(self, request, pk):
+
+        pass
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+        try:
+            deposito = DepositoDtoInsert()
+
+            deposito.nombre = request.POST['nombre']
+            deposito.descripcion = ''
+            deposito.domicilio = ''
+            deposito.barrio = ''
+            deposito.id_localidad = None
+            deposito.id_encargado = None
+            deposito.activo = 1
+
+            try:
+                deposito.descripcion = request.POST['descripcion']
+            except:
+                pass
+
+            try:
+                deposito.domicilio = request.POST['domicilio']
+            except:
+                pass
+
+            try:
+                deposito.barrio = request.POST['barrio']
+            except:
+                pass
+
+            try:
+                if request.POST['id_localidad'] != '':
+                    deposito.id_localidad = request.POST['id_localidad']
+            except:
+                pass
+
+            try:
+                if request.POST['id_encargado'] != '':
+                    deposito.id_encargado = request.POST['id_encargado']
+            except:
+                pass
+
+            if alta_deposito(deposito):
+                return Response('Usuario creado correctamente', status = status.HTTP_201_CREATED)
+            else:
+                return Response('Error al insertar el usuario', status = status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response('No fue posbile insertar el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def delete(self, request, pk):
+        try:
+            delete_deposito(pk)
+
+        except:
+            return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response('Depósito dado de baja exitosamente', status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def get_depositos(request):
+    try:
+        depositos = obtener_depositos()
+
+        response = DepositosSerializer(depositos, many=True)
+        
+    except:
+        return Response('No fue posible obtener depositos', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_localidades(request):
+    try:
+        localidades = obtener_localidades()
+
+        response = LocalidadesSerializer(localidades, many=True)
+
+    except:
+        return Response('No fue posible obtener las localidades', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_encargados(request):
+    try:
+        encargados = obtener_encargados()
+
+        response = EncargadosSerializer(encargados, many=True)
+
+    except:
+        return Response('No fue posible obtener los encargados', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
