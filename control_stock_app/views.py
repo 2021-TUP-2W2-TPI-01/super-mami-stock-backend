@@ -99,6 +99,7 @@ class Usuario(APIView):
             else:
                 return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            print(e)
             return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -183,12 +184,14 @@ class Deposito(APIView):
                 pass
 
             try:
-                deposito.id_localidad = request.POST['id_localidad']
+                if request.POST['id_localidad'] != '':
+                    deposito.id_localidad = request.POST['id_localidad']
             except:
                 pass
 
             try:
-                deposito.id_encargado = request.POST['id_encargado']
+                if request.POST['id_encargado'] != '':
+                    deposito.id_encargado = request.POST['id_encargado']
             except:
                 pass
 
