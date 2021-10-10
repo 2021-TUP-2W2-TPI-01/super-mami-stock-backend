@@ -18,7 +18,7 @@ def obtener_usuarios():
         else:
             rol = ''
 
-        usuario = Usuario()
+        usuario = UsuarioDto()
 
         usuario.id = usr['id']
         usuario.usuario = usr['username']
@@ -51,8 +51,18 @@ def alta_usuario(**args):
         return True
     except:
         return False
-                
+
+
+def actualizar_usuario(usuario, pk):
+    try:
+        User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido, password = usuario.password)
+        RolesUsuarios.objects.filter(id_usuario = pk).update(id_tipo_rol = usuario.id_tipo_rol)
     
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
 
 def obtener_roles():
 

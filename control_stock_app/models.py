@@ -152,7 +152,7 @@ class RolesUsuarios(models.Model):
         db_table = 'roles_usuarios'
 
 
-class Usuario(models.Model):
+class UsuarioDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
     usuario = models.CharField(max_length=150)
@@ -161,6 +161,8 @@ class Usuario(models.Model):
     email = models.EmailField()
     ult_conexion = models.DateTimeField()
     rol = models.CharField(max_length=50)
+    id_tipo_rol = models.IntegerField()
+    password = models.CharField(max_length=50)
 
 
 class DepositoDtoInsert(models.Model):

@@ -1,3 +1,4 @@
+from django.db.models.query_utils import RegisterLookupMixin
 from django.http import response
 from django.shortcuts import render
 from django.db import connection
@@ -69,7 +70,21 @@ class Usuario(APIView):
 
     def put(self, request, pk):
 
-        pass
+        try:
+            usuario = UsuarioDto()
+
+            usuario.nombre = request.PUT['nombre']
+            usuario.apellido = request.PUT['apellido']
+            usuario.password = request.PUT['password']
+            usuario.id_tipo_rol = request.PUT['id_tipo_rol']
+
+            if actualizar_usuario(usuario , pk):
+                return Response('Usuarios creados correctamente', status=status.HTTP_200_OK)
+            else:
+                return Response('Error en los datos', status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible actualizar el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         try:
@@ -196,12 +211,12 @@ class Deposito(APIView):
                 pass
 
             if alta_deposito(deposito):
-                return Response('Usuario creado correctamente', status = status.HTTP_201_CREATED)
+                return Response('Depósito creado correctamente', status = status.HTTP_201_CREATED)
             else:
-                return Response('Error al insertar el usuario', status = status.HTTP_400_BAD_REQUEST)
+                return Response('Error al insertar el depósito', status = status.HTTP_400_BAD_REQUEST)
 
         except:
-            return Response('No fue posbile insertar el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response('No fue posbile insertar el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, pk):
         try:
