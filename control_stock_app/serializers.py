@@ -19,6 +19,13 @@ class UserSerializer(serializers.Serializer):
     ult_conexion = serializers.DateTimeField()
     rol = serializers.CharField(max_length=50)
 
+
+class UsuarioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UsuarioDto
+        fields = ('usuario', 'nombre', 'apellido', 'email', 'password', 'id_tipo_rol')
+
     
 class TiposRolSerializer(serializers.ModelSerializer):
 

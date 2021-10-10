@@ -1,3 +1,4 @@
+from logging import fatal
 from django.http import response
 from django.shortcuts import render
 from django.db import connection
@@ -64,8 +65,16 @@ class Usuario(APIView):
     """
 
     def get(self, request, pk):
+        try:
+            usuario = obtener_usuario(pk)
 
-        pass
+            response = UsuarioSerializer(usuario)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def put(self, request, pk):
 
