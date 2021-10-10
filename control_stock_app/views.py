@@ -203,10 +203,27 @@ class Deposito(APIView):
         except:
             return Response('No fue posbile insertar el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
     def delete(self, request, pk):
+        try:
+            delete_deposito(pk)
 
-        pass
+        except:
+            return Response('Server Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response('Depósito dado de baja exitosamente', status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_depositos(request):
+    try:
+        depositos = obtener_depositos()
+
+        response = DepositosSerializer(depositos, many=True)
+        
+    except:
+        return Response('No fue posible obtener depositos', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -221,3 +238,15 @@ def get_localidades(request):
 
     return Response(response.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_encargados(request):
+    try:
+        encargados = obtener_encargados()
+
+        response = EncargadosSerializer(encargados, many=True)
+
+    except:
+        return Response('No fue posible obtener los encargados', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status=status.HTTP_200_OK)
