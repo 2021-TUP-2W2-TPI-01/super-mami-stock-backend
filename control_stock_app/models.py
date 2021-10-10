@@ -162,7 +162,7 @@ class Usuario(models.Model):
     rol = models.CharField(max_length=50)
 
 
-class DepositoDto(models.Model):
+class DepositoDtoInsert(models.Model):
 
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
