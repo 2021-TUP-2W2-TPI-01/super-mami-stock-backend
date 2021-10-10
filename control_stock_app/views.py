@@ -158,7 +158,7 @@ class Deposito(APIView):
 
     def post(self, request):
         try:
-            deposito = DepositoDto()
+            deposito = DepositoDtoInsert()
 
             deposito.nombre = request.POST['nombre']
             deposito.descripcion = ''
