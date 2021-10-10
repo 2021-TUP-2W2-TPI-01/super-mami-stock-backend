@@ -45,11 +45,15 @@ def alta_usuario(**args):
     _email = args.get('email')
     _last_name = args.get('last_name')
     _first_name = args.get('first_name')
+    _id_tipo_rol = args.get('id_tipo_rol')
     try:
-        User.objects.create(username = _username, password = _password,email= _email,
+        _rol = TiposRol.objects.get(id = _id_tipo_rol)
+        _ultimo_usuario = User.objects.create(username = _username, password = _password,email= _email,
         last_name = _last_name, first_name = _first_name)
+        RolesUsuarios.objects.create(id_usuario = _ultimo_usuario, id_tipo_rol = _rol)
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
                 
     
