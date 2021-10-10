@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.db import connection
 import rest_framework
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -98,6 +99,7 @@ class Usuario(APIView):
             else:
                 return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            print(e)
             return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -155,9 +157,51 @@ class Deposito(APIView):
         pass
 
     def post(self, request):
+        try:
+            deposito = DepositoDtoInsert()
 
-        pass
+            deposito.nombre = request.POST['nombre']
+            deposito.descripcion = ''
+            deposito.domicilio = ''
+            deposito.barrio = ''
+            deposito.id_localidad = None
+            deposito.id_encargado = None
+            deposito.activo = 1
 
+            try:
+                deposito.descripcion = request.POST['descripcion']
+            except:
+                pass
+
+            try:
+                deposito.domicilio = request.POST['domicilio']
+            except:
+                pass
+
+            try:
+                deposito.barrio = request.POST['barrio']
+            except:
+                pass
+
+            try:
+                if request.POST['id_localidad'] != '':
+                    deposito.id_localidad = request.POST['id_localidad']
+            except:
+                pass
+
+            try:
+                if request.POST['id_encargado'] != '':
+                    deposito.id_encargado = request.POST['id_encargado']
+            except:
+                pass
+
+            if alta_deposito(deposito):
+                return Response('Usuario creado correctamente', status = status.HTTP_201_CREATED)
+            else:
+                return Response('Error al insertar el usuario', status = status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response('No fue posbile insertar el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, pk):
         try:

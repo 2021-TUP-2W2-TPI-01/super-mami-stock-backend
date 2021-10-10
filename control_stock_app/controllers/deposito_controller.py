@@ -4,6 +4,28 @@ from ..models import *
 
 
 
+def alta_deposito(deposito):
+
+    try:
+        if deposito.id_encargado != None:
+            encargado = User.objects.get(id = deposito.id_encargado)
+        else:
+            encargado = None
+
+        if deposito.id_localidad != None:
+            localidad = Localidades.objects.get(id = deposito.id_localidad)
+        else:
+            localidad = None
+
+        Depositos.objects.create(nombre = deposito.nombre, descripcion = deposito.descripcion, domicilio = deposito.domicilio,
+        barrio = deposito.barrio, id_localidad = localidad, id_encargado = encargado, activo = deposito.activo)
+
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
 def obtener_depositos():
 
     depositos = Depositos.objects.select_related('id_localidad', 'id_encargado').filter(activo=True).values('id', 'nombre', 'descripcion', 'domicilio', 'barrio', 'id_localidad__descripcion', 'id_encargado__first_name', 'id_encargado__last_name')
@@ -34,6 +56,7 @@ def obtener_depositos():
 def delete_deposito(pk):
 
     Depositos.objects.filter(id = pk).update(activo = 0)
+
 
 
 
