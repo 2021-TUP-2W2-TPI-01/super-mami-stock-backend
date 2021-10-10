@@ -10,6 +10,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.db.models.base import Model
 from django.db.models.fields import CharField
 from django.db.models.fields.related import ForeignKey
 
@@ -152,7 +153,7 @@ class RolesUsuarios(models.Model):
         db_table = 'roles_usuarios'
 
 
-class Usuario(models.Model):
+class UsuarioDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
     usuario = models.CharField(max_length=150)
@@ -161,6 +162,8 @@ class Usuario(models.Model):
     email = models.EmailField()
     ult_conexion = models.DateTimeField()
     rol = models.CharField(max_length=50)
+    id_tipo_rol = models.IntegerField()
+    password = models.CharField(max_length=50)
 
 
 class DepositoDtoInsert(models.Model):

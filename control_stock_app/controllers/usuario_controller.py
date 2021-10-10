@@ -18,7 +18,7 @@ def obtener_usuarios():
         else:
             rol = ''
 
-        usuario = Usuario()
+        usuario = UsuarioDto()
 
         usuario.id = usr['id']
         usuario.usuario = usr['username']
@@ -53,6 +53,21 @@ def alta_usuario(**args):
         return False
                 
     
+def obtener_usuario(pk):
+    usuario = User.objects.get(id = pk)
+    rol = RolesUsuarios.objects.filter(id_usuario = pk).values('id_tipo_rol')
+
+    usr = UsuarioDto()
+
+    usr.nombre = usuario.first_name
+    usr.apellido = usuario.last_name
+    usr.usuario = usuario.username
+    usr.email = usuario.email
+    usr.password = usuario.password
+    usr.id_tipo_rol = rol[0]['id_tipo_rol']
+
+    return usr
+
 
 def obtener_roles():
 
