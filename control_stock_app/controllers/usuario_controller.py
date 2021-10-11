@@ -1,4 +1,5 @@
 # Aca van los metodos referidos a usuarios (obtener un usuario, obtener todos los usuarios, alta usuario, baja usuario, modificacion usuario)
+from django.contrib.auth.hashers import make_password
 from ..models import *
 from django.contrib.auth.models import User
 
@@ -41,7 +42,7 @@ def obtener_usuarios():
 
 def alta_usuario(**args):
     _username = args.get('username')
-    _password = args.get('password')
+    _password = make_password(args.get('password'))
     _email = args.get('email')
     _last_name = args.get('last_name')
     _first_name = args.get('first_name')
@@ -53,9 +54,15 @@ def alta_usuario(**args):
         return False
 
 
-def actualizar_usuario(usuario, pk):
+def actualizar_usuario(usuario, pk, flag):
     try:
-        User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido, password = usuario.password)
+        usuario.password = make_password(usuario.password)
+
+        if flag == '1':
+            User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido, password = usuario.password)
+        else:
+            User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido)
+
         RolesUsuarios.objects.filter(id_usuario = pk).update(id_tipo_rol = usuario.id_tipo_rol)
     
         return True

@@ -73,13 +73,14 @@ class Usuario(APIView):
         try:
             usuario = UsuarioDto()
 
-            usuario.nombre = request.PUT['nombre']
-            usuario.apellido = request.PUT['apellido']
-            usuario.password = request.PUT['password']
-            usuario.id_tipo_rol = request.PUT['id_tipo_rol']
+            usuario.nombre = request.POST['nombre']
+            usuario.apellido = request.POST['apellido']
+            usuario.password = request.POST['password']
+            usuario.id_tipo_rol = request.POST['id_tipo_rol']
+            flag = request.POST['cambio_password']
 
-            if actualizar_usuario(usuario , pk):
-                return Response('Usuarios creados correctamente', status=status.HTTP_200_OK)
+            if actualizar_usuario(usuario , pk, flag):
+                return Response('Usuario actualizado correctamente', status=status.HTTP_200_OK)
             else:
                 return Response('Error en los datos', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
