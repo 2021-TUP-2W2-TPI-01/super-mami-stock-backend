@@ -180,8 +180,16 @@ class Deposito(APIView):
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
     def get(self, request, pk):
+        
+        try:
+            deposito = obtener_deposito(pk)
 
-        pass
+            response = DepositosInsertSerializer(deposito)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, pk):
 

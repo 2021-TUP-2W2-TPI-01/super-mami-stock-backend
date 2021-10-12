@@ -47,7 +47,14 @@ class DepositosSerializer(serializers.ModelSerializer):
         model = DepositoDto
         fields = '__all__'
 
-        
+
+class DepositosInsertSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DepositoDtoInsert
+        fields = '__all__'
+
+
 class EncargadosSerializer(serializers.ModelSerializer):
 
     class Meta:
