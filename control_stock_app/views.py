@@ -193,7 +193,23 @@ class Deposito(APIView):
 
     def put(self, request, pk):
 
-        pass
+        try: 
+            deposito = DepositoDtoInsert()
+
+            deposito.nombre = request.POST['nombre']
+            deposito.descripcion = request.POST['descripcion']
+            deposito.domicilio = request.POST['domicilio']
+            deposito.barrio = request.POST['barrio']
+            deposito.id_localidad = request.POST['id_localidad']
+            deposito.id_encargado = request.POST['id_encargado']
+
+            if actualizar_deposito(deposito, pk):
+                return Response('Depósito actualizado correctamente', status = status.HTTP_200_OK)
+            else:
+                return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible actualizar el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         try:
