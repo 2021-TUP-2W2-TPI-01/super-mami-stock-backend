@@ -87,3 +87,21 @@ def obtener_encargados():
         lstEncargados.append(encargado)
 
     return lstEncargados
+
+def obtener_deposito(pk):
+
+    deposito = Depositos.objects.get(id = pk)
+    encargado = RolesUsuarios.objects.get(id_usuario = deposito.id_encargado)
+    localidad = Localidades.objects.get(id = deposito.id_localidad.id)
+
+    dep = DepositoDtoInsert()
+
+    dep.nombre = deposito.nombre
+    dep.descripcion = deposito.descripcion
+    dep.id_encargado = encargado.id_usuario.id
+    dep.domicilio = deposito.domicilio
+    dep.barrio = deposito.barrio
+    dep.id_localidad = localidad.id
+    
+    return dep
+
