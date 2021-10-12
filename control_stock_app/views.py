@@ -203,10 +203,16 @@ class Deposito(APIView):
             deposito.id_localidad = request.POST['id_localidad']
             deposito.id_encargado = request.POST['id_encargado']
 
-            if actualizar_deposito(deposito, pk):
-                return Response('Depósito actualizado correctamente', status = status.HTTP_200_OK)
+            if(deposito.nombre == "" or deposito.id_encargado == '0' or deposito.id_encargado == 0):
+                return Response('Debe completar los campos nombre y encargado, son obligatorios', status = status.HTTP_400_BAD_REQUEST)
             else:
-                return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
+                if not validar_nombre_deposito(deposito.nombre):
+                    return Response('El depósito cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
+                else:
+                    if actualizar_deposito(deposito, pk):
+                        return Response('Depósito actualizado correctamente', status = status.HTTP_200_OK)
+                    else:
+                        return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
             return Response('No fue posible actualizar el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -249,12 +255,17 @@ class Deposito(APIView):
                     deposito.id_encargado = request.POST['id_encargado']
             except:
                 pass
-
-            if alta_deposito(deposito):
-                return Response('Depósito creado correctamente', status = status.HTTP_201_CREATED)
+            
+            if deposito.nombre == '' or deposito.id_encargado == 0 or deposito.id_encargado == '0':
+                return Response('Debe completar los campos nombre y encargado, son obligatorios', status = status.HTTP_400_BAD_REQUEST)
             else:
-                return Response('Error al insertar el depósito', status = status.HTTP_400_BAD_REQUEST)
-
+                if validar_nombre_deposito(deposito.nombre):
+                    if alta_deposito(deposito):
+                        return Response('Depósito creado correctamente', status = status.HTTP_201_CREATED)
+                    else:
+                        return Response('Error al insertar el depósito', status = status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response('El depósito cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
         except:
             return Response('No fue posbile insertar el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
