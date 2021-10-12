@@ -1,4 +1,5 @@
 # Aca van los metodos referidos a usuarios (obtener un usuario, obtener todos los usuarios, alta usuario, baja usuario, modificacion usuario)
+from django.contrib.auth.hashers import make_password
 from ..models import *
 from django.contrib.auth.models import User
 
@@ -41,7 +42,7 @@ def obtener_usuarios():
 
 def alta_usuario(**args):
     _username = args.get('username')
-    _password = args.get('password')
+    _password = make_password(args.get('password'))
     _email = args.get('email')
     _last_name = args.get('last_name')
     _first_name = args.get('first_name')
@@ -55,8 +56,24 @@ def alta_usuario(**args):
     except Exception as e:
         print(e)
         return False
-                
+
+
+def actualizar_usuario(usuario, pk, flag):
+    try:
+        usuario.password = make_password(usuario.password)
+
+        if flag == '1':
+            User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido, password = usuario.password)
+        else:
+            User.objects.filter(id = pk).update(first_name = usuario.nombre, last_name = usuario.apellido)
+
+        RolesUsuarios.objects.filter(id_usuario = pk).update(id_tipo_rol = usuario.id_tipo_rol)
     
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
 def obtener_usuario(pk):
     usuario = User.objects.get(id = pk)
     rol = RolesUsuarios.objects.filter(id_usuario = pk).values('id_tipo_rol')
@@ -71,6 +88,7 @@ def obtener_usuario(pk):
     usr.id_tipo_rol = rol[0]['id_tipo_rol']
 
     return usr
+
 
 
 def obtener_roles():
