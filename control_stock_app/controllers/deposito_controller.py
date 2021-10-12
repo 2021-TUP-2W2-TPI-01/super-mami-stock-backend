@@ -105,3 +105,10 @@ def obtener_deposito(pk):
     
     return dep
 
+def actualizar_deposito(deposito, pk):
+    try:
+        Depositos.objects.filter(id = pk).update(nombre = deposito.nombre, descripcion = deposito.descripcion, domicilio = deposito.domicilio, barrio = deposito.barrio, id_localidad = deposito.id_localidad, id_encargado = deposito.id_encargado)
+        return True
+    except Exception as e:
+        print(e)
+        return False
