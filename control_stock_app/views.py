@@ -1,4 +1,5 @@
 from django.db.models.query_utils import RegisterLookupMixin
+from logging import fatal
 from django.http import response
 from django.shortcuts import render
 from django.db import connection
@@ -65,8 +66,16 @@ class Usuario(APIView):
     """
 
     def get(self, request, pk):
+        try:
+            usuario = obtener_usuario(pk)
 
-        pass
+            response = UsuarioSerializer(usuario)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el usuario', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def put(self, request, pk):
 
@@ -94,6 +103,7 @@ class Usuario(APIView):
             _email = ""
             _last_name = ""
             _first_name = ""
+            _id_tipo_rol = ""
             try:
                 _email = request.POST['email']
             except:
@@ -103,20 +113,25 @@ class Usuario(APIView):
             except:
                 pass
             try:
-                _first_name = request.POST['_first_name']
+                _first_name = request.POST['first_name']
+            except:
+                pass
+            try:
+                _id_tipo_rol = request.POST['id_tipo_rol']
             except:
                 pass
             if _username != None and _username != "" and _password != None and _password != "":
                 if alta_usuario(username=_username, password=_password, email=_email,
-                                    last_name=_last_name, first_name=_first_name):
-                    return Response('Usuarios creados correctamente', status=status.HTTP_201_CREATED)
+                                    last_name=_last_name, first_name=_first_name, id_tipo_rol = _id_tipo_rol):
+                    return Response('Usuario creado correctamente', status=status.HTTP_201_CREATED)
                 else:
                     return Response('Existe un usuario con ese username, reintente', status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response('Debe Ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
+                return Response('Debe ingresar los campos obligatorios', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
             return Response('Datos Insuficientes', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
     def delete(self, request, pk):
