@@ -52,7 +52,7 @@ class DepositosInsertSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DepositoDtoInsert
-        fields = '__all__'
+        fields = ('nombre', 'descripcion', 'domicilio', 'barrio', 'id_localidad', 'id_encargado')
 
 
 class EncargadosSerializer(serializers.ModelSerializer):
