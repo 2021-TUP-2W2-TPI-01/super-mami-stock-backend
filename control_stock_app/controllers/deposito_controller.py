@@ -112,3 +112,12 @@ def actualizar_deposito(deposito, pk):
     except Exception as e:
         print(e)
         return False
+
+def validar_nombre_deposito(nom):
+
+    deposito = Depositos.objects.filter(nombre = nom)
+
+    if deposito.count() > 0:
+        return False
+    else:
+        return True
