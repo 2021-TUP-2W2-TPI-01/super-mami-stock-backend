@@ -28,7 +28,7 @@ def login(request):
         _password = request.POST['password']
 
         try:
-            _objUser = User.objects.get(username=_username)
+            _objUser = User.objects.get(username=_username, is_active=True)
             if not check_password(_password, _objUser.password):
                 raise User.DoesNotExist
         except User.DoesNotExist:
