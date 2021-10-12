@@ -113,7 +113,28 @@ def actualizar_deposito(deposito, pk):
         print(e)
         return False
 
-def validar_nombre_deposito(nom):
+
+def validar_nombre_deposito_update(nom, id_dep):
+    validado = False
+
+    deposito = Depositos.objects.get(id=id_dep)
+
+    # si lo que se está intentando modificar es el nombre, hacemos la validación de disponibilidad de nombres
+    if deposito.nombre != nom:
+
+        dep_disponible = Depositos.objects.filter(nombre=nom)
+
+        if dep_disponible.count() == 0:
+            validado = True
+        
+    # si no se está intentando modificar el nombre, lo damos como validado.
+    else:
+        validado = True
+    
+    return validado
+
+
+def validar_nombre_deposito_insert(nom):
 
     deposito = Depositos.objects.filter(nombre = nom)
 

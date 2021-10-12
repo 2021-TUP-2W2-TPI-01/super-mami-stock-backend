@@ -206,7 +206,7 @@ class Deposito(APIView):
             if(deposito.nombre == "" or deposito.id_encargado == '0' or deposito.id_encargado == 0):
                 return Response('Debe completar los campos nombre y encargado, son obligatorios', status = status.HTTP_400_BAD_REQUEST)
             else:
-                if not validar_nombre_deposito(deposito.nombre):
+                if not validar_nombre_deposito_update(deposito.nombre, pk):
                     return Response('El depósito cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
                 else:
                     if actualizar_deposito(deposito, pk):
@@ -259,7 +259,7 @@ class Deposito(APIView):
             if deposito.nombre == '' or deposito.id_encargado == 0 or deposito.id_encargado == '0':
                 return Response('Debe completar los campos nombre y encargado, son obligatorios', status = status.HTTP_400_BAD_REQUEST)
             else:
-                if validar_nombre_deposito(deposito.nombre):
+                if validar_nombre_deposito_insert(deposito.nombre):
                     if alta_deposito(deposito):
                         return Response('Depósito creado correctamente', status = status.HTTP_201_CREATED)
                     else:
