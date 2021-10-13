@@ -25,6 +25,8 @@ urlpatterns = [
 
     # ---------- Gestion de artículos ---------- #
     path('articulos/', views.get_articulos), # Obtener todos los artículos, llega a través de un GET
+    path('articulo/', views.Articulo.as_view()), #Alta de artículo, llega a través de POST
+
 
     path('marcas/', views.get_marcas), #Obtener todas las marcas, llega a través de GET
 

@@ -30,6 +30,30 @@ def obtener_articulos():
     return lstArticulos
 
 
+def alta_articulo(articulo):
+    try:
+        marca = Marcas.objects.get(id = articulo.id_marca)
+
+        categoria = Categorias.objects.get(id = articulo.id_categoria)
+
+        unidad_medida = UnidadesMedida.objects.get(id = articulo.id_unidad_medida)
+
+        Articulos.objects.create(nombre = articulo.nombre, descripcion = articulo.descripcion, precio_unitario = articulo.precio_unitario,
+            id_marca = marca, id_categoria = categoria, id_unidad_medida = unidad_medida, cantidad_medida = articulo.cantidad_medida)
+
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
+def articulo_repetido(n):
+    if Articulos.objects.filter(nombre = n).count() > 0:
+        return True
+    else:
+        return False
+
+
 def obtener_marcas():
     marcas = Marcas.objects.all()
 
