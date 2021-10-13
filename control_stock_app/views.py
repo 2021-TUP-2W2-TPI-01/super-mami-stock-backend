@@ -322,6 +322,19 @@ def get_encargados(request):
 
 # ---------- Gestion de artículos ---------- #
 @api_view(['GET'])
+def get_articulos(request):
+    try:
+        articulos = obtener_articulos()
+
+        response = ArticulosSerializer(articulos, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener los artículos', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 def get_marcas(request):
     try:
         marcas = obtener_marcas()

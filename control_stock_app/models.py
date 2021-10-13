@@ -194,3 +194,16 @@ class EncargadoDto(models.Model):
     descripcion = models.CharField(max_length=100)
 
 
+class ArticuloDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50)
+    precio_unitario = models.FloatField()
+    id_marca = models.IntegerField()
+    marca = models.CharField(max_length=50)
+    id_categoria = models.IntegerField()
+    categoria = models.CharField(max_length=50)
+    id_unidad_medida = models.IntegerField()
+    unidad_medida = models.CharField(max_length=50)
+    cantidad_medida = models.IntegerField()

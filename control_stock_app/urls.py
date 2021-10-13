@@ -24,7 +24,7 @@ urlpatterns = [
 
 
     # ---------- Gestion de artículos ---------- #
-
+    path('articulos/', views.get_articulos), # Obtener todos los artículos, llega a través de un GET
 
     path('marcas/', views.get_marcas), #Obtener todas las marcas, llega a través de GET
 
