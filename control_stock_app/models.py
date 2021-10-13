@@ -22,7 +22,7 @@ class Articulos(models.Model):
     id_marca = models.ForeignKey('Marcas', models.DO_NOTHING, db_column='id_marca', blank=True, null=True)
     id_categoria = models.ForeignKey('Categorias', models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
     id_unidad_medida = models.ForeignKey('UnidadesMedida', models.DO_NOTHING, db_column='id_unidad_medida', blank=True, null=True)
-    cantidad_medida = models.FloatField(blank=True, null=True)
+    cantidad_medida = models.IntegerField(blank=True, null=True)
     activo = models.BooleanField(default=True)
 
     def is_activo(self):
@@ -65,6 +65,27 @@ class DepositosUsuarios(models.Model):
         managed = False
         db_table = 'depositos_usuarios'
         unique_together = (('id_deposito', 'id_usuario'),)
+
+
+class DetallesPedido(models.Model):
+    id_pedido = models.ForeignKey('Pedidos', models.DO_NOTHING, db_column='id_pedido', blank=True, null=True)
+    id_articulo = models.ForeignKey(Articulos, models.DO_NOTHING, db_column='id_articulo', blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detalles_pedido'
+
+
+class DetallesTraspaso(models.Model):
+    id_traspaso = models.ForeignKey('Traspasos', models.DO_NOTHING, db_column='id_traspaso', blank=True, null=True)
+    id_articulo = models.ForeignKey(Articulos, models.DO_NOTHING, db_column='id_articulo', blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detalles_traspaso'
+
 
 class Existencias(models.Model):
     id_articulo = models.OneToOneField(Articulos, models.DO_NOTHING, db_column='id_articulo', primary_key=True)
@@ -119,6 +140,20 @@ class MovimientoDeposito(models.Model):
         unique_together = (('id_articulo', 'id_deposito'),)
 
 
+class Pedidos(models.Model):
+    fecha = models.DateField(blank=True, null=True)
+    numero_remito_asociado = models.IntegerField(blank=True, null=True)
+    id_tipo_estado = models.ForeignKey('TiposEstado', models.DO_NOTHING, db_column='id_tipo_estado', blank=True, null=True)
+    observaciones = models.CharField(max_length=50, blank=True, null=True)
+    id_proveedor = models.ForeignKey('Proveedores', models.DO_NOTHING, db_column='id_proveedor', blank=True, null=True)
+    id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True)
+    id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'pedidos'
+
+
 class Proveedores(models.Model):
     descripcion = models.CharField(max_length=50, blank=True, null=True)
     telefono = models.CharField(max_length=50, blank=True, null=True)
@@ -129,12 +164,43 @@ class Proveedores(models.Model):
         db_table = 'proveedores'
 
 
+class RolesUsuarios(models.Model):
+    id_usuario = models.OneToOneField(User, models.DO_NOTHING, db_column='id_usuario', primary_key=True)
+    id_tipo_rol = models.ForeignKey('TiposRol', models.DO_NOTHING, db_column='id_tipo_rol', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'roles_usuarios'
+
+
+class TiposEstado(models.Model):
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tipos_estado'
+
+
 class TiposRol(models.Model):
     descripcion = models.CharField(max_length=50)
 
     class Meta:
         managed = False
         db_table = 'tipos_rol'
+
+
+class Traspasos(models.Model):
+    fecha = models.DateField(blank=True, null=True)
+    id_tipo_estado = models.ForeignKey(TiposEstado, models.DO_NOTHING, db_column='id_tipo_estado', blank=True, null=True)
+    observaciones = models.CharField(max_length=50, blank=True, null=True)
+    id_deposito_origen = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_origen', blank=True, null=True)
+    id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True)
+    id_usuario_genero = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_genero', blank=True, null=True)
+    id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'traspasos'
 
 
 class UnidadesMedida(models.Model):
