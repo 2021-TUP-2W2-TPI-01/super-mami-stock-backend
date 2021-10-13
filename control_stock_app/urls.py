@@ -21,4 +21,16 @@ urlpatterns = [
     path('localidades/', views.get_localidades), #Obtener todas las localidades, llega a través de GET 
   
     path('encargados/', views.get_encargados), #Obtener todos los encargados, llega a través de GET
+
+
+    # ---------- Gestion de artículos ---------- #
+    path('articulos/', views.get_articulos), # Obtener todos los artículos, llega a través de un GET
+    path('articulo/', views.Articulo.as_view()), #Alta de artículo, llega a través de POST
+
+
+    path('marcas/', views.get_marcas), #Obtener todas las marcas, llega a través de GET
+
+    path('categorias/', views.get_categorias), #Obtener todas las categorías, llega a través de GET
+
+    path('unidades_medida/', views.get_unidades_medida), #Obtener todas las unidades de medida, llega a través de GET
 ]

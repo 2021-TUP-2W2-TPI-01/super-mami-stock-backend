@@ -17,6 +17,7 @@ from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
+from .controllers.articulo_controller import *
 
 
 @api_view(['POST'])
@@ -173,7 +174,8 @@ def get_tipos_rol(request):
         
     return Response(response.data, status=status.HTTP_200_OK)
   
-  
+
+
 # ---------- Gestion de depósitos -------------- #
 class Deposito(APIView):
     """
@@ -316,3 +318,119 @@ def get_encargados(request):
         return Response('No fue posible obtener los encargados', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status=status.HTTP_200_OK)
+
+
+# ---------- Gestion de artículos ---------- #
+class Articulo(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+    def get(self, request, pk):
+        
+        pass
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+        try:
+            articulo = ArticuloDto()
+
+            if request.POST['nombre'] == '':
+                return Response('El campo nombre es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.nombre = request.POST['nombre']
+
+            if request.POST['descripcion'] != '':
+                articulo.descripcion = request.POST['descripcion']
+            else:
+                articulo.descripcion = None
+
+            if request.POST['precio_unitario'] == '' or request.POST['precio_unitario'] == '0' or request.POST['precio_unitario'] == 0:
+                return Response('El campo precio unitario es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.precio_unitario = request.POST['precio_unitario']
+
+            if request.POST['id_marca'] == '0' or request.POST['id_marca'] == 0:
+                return Response('El campo marca es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.id_marca = request.POST['id_marca']
+
+            if request.POST['id_categoria'] == '0' or request.POST['id_categoria'] == 0:
+                return Response('El campo categoría es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.id_categoria = request.POST['id_categoria']
+
+            if request.POST['id_unidad_medida'] == '0' or request.POST['id_unidad_medida'] == 0:
+                return Response('El campo unidad de medida es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.id_unidad_medida = request.POST['id_unidad_medida']
+
+            if request.POST['cantidad_medida'] == '' or request.POST['cantidad_medida'] == '0' or request.POST['cantidad_medida'] == 0:
+                return Response('El campo cantidad de medida es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            articulo.cantidad_medida = request.POST['cantidad_medida']
+
+
+            if articulo_repetido(articulo.nombre):
+                return Response('El nombre de artículo ingresado ya se encuentra registrado', status = status.HTTP_400_BAD_REQUEST)
+            else:
+                if alta_articulo(articulo):
+                    return Response('Artículo creado exitosamente', status = status.HTTP_201_CREATED)
+                else:
+                    return Response('Error al insertar el artículo', status = status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            print(e)
+            return Response('No fue posible insertar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def delete(self, request, pk):
+        
+        pass
+
+
+@api_view(['GET'])
+def get_articulos(request):
+    try:
+        articulos = obtener_articulos()
+
+        response = ArticulosSerializer(articulos, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener los artículos', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_marcas(request):
+    try:
+        marcas = obtener_marcas()
+
+        response = MarcasSerializer(marcas, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las marcas', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_categorias(request):
+    try:
+        categorias = obtener_categorias()
+        
+        response = CategoriasSerializer(categorias, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las categorías', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_unidades_medida(request):
+    try:
+        unidades_medida = obtener_unidades_medida()
+
+        response = UnidadesMedidaSerializer(unidades_medida, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las unidades de medida', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
