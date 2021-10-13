@@ -70,3 +70,6 @@ def obtener_unidades_medida():
     unidades_medida = UnidadesMedida.objects.all()
 
     return unidades_medida
+
+def delete_articulo(pk):
+    Articulos.objects.filter(id = pk).update(activo = 0)
