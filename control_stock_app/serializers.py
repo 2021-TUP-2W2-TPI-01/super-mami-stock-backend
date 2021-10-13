@@ -61,3 +61,23 @@ class EncargadosSerializer(serializers.ModelSerializer):
         model = EncargadoDto
         fields = '__all__'
 
+
+class MarcasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Marcas
+        fields = '__all__'
+
+
+class CategoriasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Categorias
+        fields = '__all__'
+
+
+class UnidadesMedidaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UnidadesMedida
+        fields = '__all__'

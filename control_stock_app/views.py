@@ -17,6 +17,7 @@ from .models import *
 from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
+from .controllers.articulo_controller import *
 
 
 @api_view(['POST'])
@@ -173,7 +174,8 @@ def get_tipos_rol(request):
         
     return Response(response.data, status=status.HTTP_200_OK)
   
-  
+
+
 # ---------- Gestion de depósitos -------------- #
 class Deposito(APIView):
     """
@@ -316,3 +318,43 @@ def get_encargados(request):
         return Response('No fue posible obtener los encargados', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status=status.HTTP_200_OK)
+
+
+# ---------- Gestion de artículos ---------- #
+@api_view(['GET'])
+def get_marcas(request):
+    try:
+        marcas = obtener_marcas()
+
+        response = MarcasSerializer(marcas, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las marcas', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_categorias(request):
+    try:
+        categorias = obtener_categorias()
+        
+        response = CategoriasSerializer(categorias, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las categorías', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_unidades_medida(request):
+    try:
+        unidades_medida = obtener_unidades_medida()
+
+        response = UnidadesMedidaSerializer(unidades_medida, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las unidades de medida', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
