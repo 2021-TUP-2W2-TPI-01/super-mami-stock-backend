@@ -194,10 +194,10 @@ class Traspasos(models.Model):
     fh_generacion = models.DateTimeField(blank=True, null=True)
     id_tipo_estado = models.ForeignKey(TiposEstado, models.DO_NOTHING, db_column='id_tipo_estado', blank=True, null=True)
     observaciones = models.CharField(max_length=50, blank=True, null=True)
-    id_deposito_origen = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_origen', blank=True, null=True)
-    id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True)
-    id_usuario_genero = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_genero', blank=True, null=True)
-    id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True)
+    id_deposito_origen = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_origen', blank=True, null=True, related_name='id_deposito_origen')
+    id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True, related_name='id_deposito_destino')
+    id_usuario_genero = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_genero', blank=True, null=True, related_name='id_usuario_genero')
+    id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True, related_name='id_usuario_proceso')
     fh_procesado = models.DateTimeField(blank=True, null=True)
 
     class Meta:
