@@ -326,12 +326,40 @@ class Articulo(APIView):
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
     def get(self, request, pk):
-        
-        pass
+        try:
+            articulo = obtener_articulo(pk)
+
+            response = ArticuloSerializer(articulo)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, pk):
 
-        pass
+        try:
+            articulo = ArticuloDto()
+
+            articulo.descripcion = request.POST['descripcion']
+            articulo.precio_unitario = request.POST['precio_unitario']
+            articulo.cantidad_medida = request.POST['cantidad_medida']
+
+            if articulo.precio_unitario == '' or articulo.precio_unitario == 0 or articulo.precio_unitario == '0':
+                return Response('El campo precio unitario es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            if articulo.cantidad_medida == '' or articulo.cantidad_medida == 0 or articulo.cantidad_medida == '0':
+                return Response('El campo cantidad de medida es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            if articulo_repetido(articulo.nombre):
+                return Response('El artículo cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
+            else:
+                if actualizar_articulo(articulo, pk):
+                        return Response('Artículo actualizado correctamente', status = status.HTTP_200_OK)
+                else:
+                    return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
+        except:
+            print(e)
+            return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def post(self, request):
         try:
@@ -368,7 +396,7 @@ class Articulo(APIView):
 
 
             if articulo_repetido(articulo.nombre):
-                return Response('El nombre de artículo ingresado ya se encuentra registrado', status = status.HTTP_400_BAD_REQUEST)
+                return Response('El artículo cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
             else:
                 if alta_articulo(articulo):
                     return Response('Artículo creado exitosamente', status = status.HTTP_201_CREATED)
@@ -404,12 +432,11 @@ def get_articulos(request):
 
 @api_view(['GET'])
 def get_marcas(request):
-    try:
+    try: 
         marcas = obtener_marcas()
 
         response = MarcasSerializer(marcas, many = True)
     except Exception as e:
-        print(e)
         return Response('No fue posible obtener las marcas', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status = status.HTTP_200_OK)

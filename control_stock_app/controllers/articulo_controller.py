@@ -71,5 +71,36 @@ def obtener_unidades_medida():
 
     return unidades_medida
 
+  
+def obtener_articulo(pk):
+
+    articulo = Articulos.objects.get(id = pk)
+    marca = Marcas.objects.get(id = articulo.id_marca.id)
+    categoria = Categorias.objects.get(id = articulo.id_categoria.id)
+    unidad_medida = UnidadesMedida.objects.get(id = articulo.id_unidad_medida.id)
+
+    art = ArticuloDto()
+
+    art.nombre = articulo.nombre
+    art.descripcion = articulo.descripcion
+    art.precio_unitario = articulo.precio_unitario
+    art.id_marca = marca.id
+    art.id_categoria = categoria.id
+    art.id_unidad_medida = unidad_medida.id
+    art.cantidad_medida = articulo.cantidad_medida
+
+    return art
+
+
+def actualizar_articulo(articulo, pk):
+    try:
+        Articulos.objects.filter(id = pk).update(descripcion = articulo.descripcion, precio_unitario = articulo.precio_unitario, cantidad_medida = articulo.cantidad_medida)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+      
 def delete_articulo(pk):
     Articulos.objects.filter(id = pk).update(activo = 0)
+
