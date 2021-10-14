@@ -71,6 +71,7 @@ def obtener_unidades_medida():
 
     return unidades_medida
 
+  
 def obtener_articulo(pk):
 
     articulo = Articulos.objects.get(id = pk)
@@ -90,6 +91,7 @@ def obtener_articulo(pk):
 
     return art
 
+
 def actualizar_articulo(articulo, pk):
     try:
         Articulos.objects.filter(id = pk).update(descripcion = articulo.descripcion, precio_unitario = articulo.precio_unitario, cantidad_medida = articulo.cantidad_medida)
@@ -97,3 +99,8 @@ def actualizar_articulo(articulo, pk):
     except Exception as e:
         print(e)
         return False
+
+      
+def delete_articulo(pk):
+    Articulos.objects.filter(id = pk).update(activo = 0)
+
