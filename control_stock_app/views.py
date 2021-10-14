@@ -356,7 +356,7 @@ class Articulo(APIView):
                         return Response('Artículo actualizado correctamente', status = status.HTTP_200_OK)
                 else:
                     return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
-        except:
+        except Exception as e:
             print(e)
             return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
