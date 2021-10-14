@@ -338,7 +338,28 @@ class Articulo(APIView):
 
     def put(self, request, pk):
 
-        pass
+        try:
+            articulo = ArticuloDto()
+
+            articulo.descripcion = request.POST['descripcion']
+            articulo.precio_unitario = request.POST['precio_unitario']
+            articulo.cantidad_medida = request.POST['cantidad_medida']
+
+            if articulo.precio_unitario == '' or articulo.precio_unitario == 0 or articulo.precio_unitario == '0':
+                return Response('El campo precio unitario es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            if articulo.cantidad_medida == '' or articulo.cantidad_medida == 0 or articulo.cantidad_medida == '0':
+                return Response('El campo cantidad de medida es obligatorio', status = status.HTTP_400_BAD_REQUEST)
+            if articulo_repetido(articulo.nombre):
+                return Response('El artículo cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
+            else:
+                if actualizar_articulo(articulo, pk):
+                        return Response('Artículo actualizado correctamente', status = status.HTTP_200_OK)
+                else:
+                    return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
+        except:
+            print(e)
+            return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def post(self, request):
         try:
@@ -375,7 +396,7 @@ class Articulo(APIView):
 
 
             if articulo_repetido(articulo.nombre):
-                return Response('El nombre de artículo ingresado ya se encuentra registrado', status = status.HTTP_400_BAD_REQUEST)
+                return Response('El artículo cargado ya existe', status = status.HTTP_400_BAD_REQUEST)
             else:
                 if alta_articulo(articulo):
                     return Response('Artículo creado exitosamente', status = status.HTTP_201_CREATED)

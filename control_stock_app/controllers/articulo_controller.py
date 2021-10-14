@@ -90,3 +90,10 @@ def obtener_articulo(pk):
 
     return art
 
+def actualizar_articulo(articulo, pk):
+    try:
+        Articulos.objects.filter(id = pk).update(descripcion = articulo.descripcion, precio_unitario = articulo.precio_unitario, cantidad_medida = articulo.cantidad_medida)
+        return True
+    except Exception as e:
+        print(e)
+        return False

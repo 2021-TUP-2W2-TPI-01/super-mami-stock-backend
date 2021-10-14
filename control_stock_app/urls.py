@@ -26,7 +26,6 @@ urlpatterns = [
     # ---------- Gestion de artículos ---------- #
     path('articulos/', views.get_articulos), # Obtener todos los artículos, llega a través de un GET
     path('articulo/', views.Articulo.as_view()), #Alta de artículo, llega a través de POST
-    path('articulo/<int:pk>/', views.Articulo.as_view()), # Consulta, Baja y Modificación de un articulo, llega a través de GET, DELETE y PUT. El parámetro que se recibe en la URL es la pk del mismo
 
     path('marcas/', views.get_marcas), #Obtener todas las marcas, llega a través de GET
 
