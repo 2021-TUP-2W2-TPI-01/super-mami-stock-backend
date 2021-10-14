@@ -129,7 +129,7 @@ class Marcas(models.Model):
 
 
 class MovimientoDeposito(models.Model):
-    id_articulo = models.OneToOneField(Articulos, models.DO_NOTHING, db_column='id_articulo', primary_key=True)
+    id_articulo = models.ForeignKey(Articulos, models.DO_NOTHING, db_column='id_articulo')
     id_deposito = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito')
     cantidad = models.IntegerField(blank=True, null=True)
     ingreso = models.TextField(blank=True, null=True)  # This field type is a guess.
@@ -148,6 +148,7 @@ class Pedidos(models.Model):
     id_proveedor = models.ForeignKey('Proveedores', models.DO_NOTHING, db_column='id_proveedor', blank=True, null=True)
     id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True)
     id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True)
+    fh_procesado = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -190,13 +191,14 @@ class TiposRol(models.Model):
 
 
 class Traspasos(models.Model):
-    fecha = models.DateField(blank=True, null=True)
+    fh_generacion = models.DateTimeField(blank=True, null=True)
     id_tipo_estado = models.ForeignKey(TiposEstado, models.DO_NOTHING, db_column='id_tipo_estado', blank=True, null=True)
     observaciones = models.CharField(max_length=50, blank=True, null=True)
     id_deposito_origen = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_origen', blank=True, null=True)
     id_deposito_destino = models.ForeignKey(Depositos, models.DO_NOTHING, db_column='id_deposito_destino', blank=True, null=True)
     id_usuario_genero = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_genero', blank=True, null=True)
     id_usuario_proceso = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario_proceso', blank=True, null=True)
+    fh_procesado = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
