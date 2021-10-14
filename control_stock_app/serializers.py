@@ -68,6 +68,12 @@ class ArticulosSerializer(serializers.ModelSerializer):
         fields = ('id', 'nombre', 'descripcion', 'precio_unitario', 'marca', 'categoria', 'unidad_medida', 'cantidad_medida')
 
 
+class ArticuloSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArticuloDto
+        fields = ('nombre', 'descripcion', 'precio_unitario', 'id_marca', 'id_categoria', 'id_unidad_medida', 'cantidad_medida')
+
+
 class MarcasSerializer(serializers.ModelSerializer):
 
     class Meta:

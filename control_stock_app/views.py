@@ -326,8 +326,15 @@ class Articulo(APIView):
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
     def get(self, request, pk):
-        
-        pass
+        try:
+            articulo = obtener_articulo(pk)
+
+            response = ArticuloSerializer(articulo)
+
+            return Response(response.data, status = status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, pk):
 
@@ -399,12 +406,11 @@ def get_articulos(request):
 
 @api_view(['GET'])
 def get_marcas(request):
-    try:
+    try: 
         marcas = obtener_marcas()
 
         response = MarcasSerializer(marcas, many = True)
     except Exception as e:
-        print(e)
         return Response('No fue posible obtener las marcas', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status = status.HTTP_200_OK)
