@@ -43,3 +43,7 @@ def obtener_pedido(pk):
     p.detalles_pedido = list(detalles_pedido)
 
     return p
+
+
+def delete_detalles_pedido(pk):
+    DetallesPedido.objects.delete

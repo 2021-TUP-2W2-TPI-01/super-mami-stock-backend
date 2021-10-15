@@ -40,5 +40,6 @@ urlpatterns = [
     path('pedido/<int:pk>/', views.Pedido.as_view()), #Consulta de un pedido, llega a través de GET. El parámetro que se recibe en la URL es la pk del mismo
 
     path('pedido_confirmado/<int:pk>/', views.pedido_confirmado), #Confirma el pedido, llega a través de POST. El parámetro que se recibe en la URL es la pk del mismo
+    path('pedido_modificado/<int:pk>/', views.pedido_modificado), #Modifica el pedido, llega a través de POST. El parámetro que se recibe en la URL es la pk del mismo
     path('pedido_rechazado/<int:pk>/', views.pedido_rechazado), #Rechaza el pedido, llega a través de POST. El parámetro que se recibe en la URL es la pk del mismo
 ]

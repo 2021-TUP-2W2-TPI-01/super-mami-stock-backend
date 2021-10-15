@@ -524,9 +524,20 @@ def pedido_confirmado(request, pk):
                                                 })
     except Exception as e:
         print(e)
-        return Response('No fue posible confirmar el pedido', status = status-status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response('No fue posible confirmar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response[0]['v_result'], status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def pedido_modificado(request, pk):
+    try:
+        pass
+    except Exception as e:
+        print(e)
+        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
 
 
 @api_view(['POST'])
