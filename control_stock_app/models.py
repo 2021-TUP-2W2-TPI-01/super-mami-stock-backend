@@ -275,3 +275,20 @@ class ArticuloDto(models.Model):
     id_unidad_medida = models.IntegerField()
     unidad_medida = models.CharField(max_length=50)
     cantidad_medida = models.IntegerField()
+
+
+class PedidoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    fecha = models.DateField()
+    numero_remito_asociado = models.IntegerField()
+    id_tipo_estado = models.IntegerField()
+    tipo_estado = models.CharField(max_length=50)
+    observaciones = models.CharField(max_length=50)
+    id_proveedor = models.IntegerField()
+    proveedor = models.CharField(max_length=50)
+    id_deposito_destino = models.IntegerField()
+    deposito_destino = models.CharField(max_length=50)
+    id_usuario_proceso = models.IntegerField()
+    usuario_proceso = models.CharField(max_length=100)
+    fh_procesado = models.DateTimeField()

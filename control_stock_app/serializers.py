@@ -93,3 +93,10 @@ class UnidadesMedidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnidadesMedida
         fields = '__all__'
+
+
+class PedidosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model= PedidoDto
+        fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'proveedor', 'deposito_destino')

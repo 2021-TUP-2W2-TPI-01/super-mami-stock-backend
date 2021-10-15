@@ -18,6 +18,7 @@ from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
 from .controllers.articulo_controller import *
+from .controllers.pedido_controller import *
 
 
 @api_view(['POST'])
@@ -464,5 +465,40 @@ def get_unidades_medida(request):
     except Exception as e:
         print(e)
         return Response('No fue posible obtener las unidades de medida', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+    # --------- Gestion de pedidos --------- #
+class Deposito(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+    def get(self, request, pk):
+        
+        pass
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+        
+        pass
+
+    def delete(self, request, pk):
+        
+        pass
+
+
+@api_view(['GET'])
+def get_pedidos(request):
+    try:
+        pedidos = obtener_pedidos()
+
+        response = PedidosSerializer(pedidos, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener los pedidos', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status = status.HTTP_200_OK)
