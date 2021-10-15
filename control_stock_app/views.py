@@ -513,7 +513,7 @@ def get_pedidos(request):
     return Response(response.data, status = status.HTTP_200_OK)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def pedido_confirmado(request, pk):
     try:
         response = _db.get_data_from_procedure(connection = connection,
