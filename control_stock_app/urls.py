@@ -37,6 +37,7 @@ urlpatterns = [
 
     # --------- Gestión de pedidos --------- #
     path('pedidos/', views.get_pedidos), #Obtener todos los pedidos, llega a través de GET
-    path('pedido/<int:pk>/', views.Pedido.as_view()), # Consulta de un pedido, llega a través de GET. El parámetro que se recibe en la URL es la pk del mismo
+    path('pedido/<int:pk>/', views.Pedido.as_view()), #Consulta de un pedido, llega a través de GET. El parámetro que se recibe en la URL es la pk del mismo
 
+    path('pedido_confirmado/<int:pk>/', views.pedido_confirmado), #Confirma el pedido, llega a travéz de POST
 ]

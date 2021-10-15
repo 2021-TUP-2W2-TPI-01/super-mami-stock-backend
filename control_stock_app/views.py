@@ -511,3 +511,20 @@ def get_pedidos(request):
         return Response('No fue posible obtener los pedidos', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+def pedido_confirmado(request, pk):
+    try:
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name='sp_procesar_pedido_confirmado',
+                                                proc_params={
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id
+                                                })
+
+    except Exception as e:
+        print(e)
+        return Response('No fue posible confirmar el pedido', status = status-status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response[0]['v_result'], status = status.HTTP_200_OK)
