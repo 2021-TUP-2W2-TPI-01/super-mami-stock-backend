@@ -33,4 +33,6 @@ urlpatterns = [
     path('categorias/', views.get_categorias), #Obtener todas las categorías, llega a través de GET
 
     path('unidades_medida/', views.get_unidades_medida), #Obtener todas las unidades de medida, llega a través de GET
+
+    path('existencias/', views.get_existencias), #Obtener todas las existencias, llega a través de GET
 ]

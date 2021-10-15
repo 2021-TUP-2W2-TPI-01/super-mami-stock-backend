@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 
+from re import M
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 from datetime import datetime
@@ -275,3 +276,13 @@ class ArticuloDto(models.Model):
     id_unidad_medida = models.IntegerField()
     unidad_medida = models.CharField(max_length=50)
     cantidad_medida = models.IntegerField()
+
+class ExistenciaDto(models.Model):
+
+    id_articulo = models.IntegerField(primary_key=True)
+    nombre_articulo = models.CharField(max_length=50)
+    id_deposito = models.IntegerField()
+    cantidad = models.IntegerField()
+    stock_minimo = models.IntegerField()
+    stock_maximo = models.IntegerField()
+    id_lote = models.IntegerField()

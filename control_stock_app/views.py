@@ -18,6 +18,7 @@ from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
 from .controllers.articulo_controller import *
+from .controllers.existencia_controller import *
 
 
 @api_view(['POST'])
@@ -465,4 +466,17 @@ def get_unidades_medida(request):
         print(e)
         return Response('No fue posible obtener las unidades de medida', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    return Response(response.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_existencias(request):
+    try:
+        existencias = obtener_existencias(request.user)
+
+        response = ExistenciasSerializer(existencias, many = True)
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las existencias', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
     return Response(response.data, status = status.HTTP_200_OK)
