@@ -286,3 +286,22 @@ class ExistenciaDto(models.Model):
     stock_minimo = models.IntegerField()
     stock_maximo = models.IntegerField()
     id_lote = models.IntegerField()
+
+
+class TraspasoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    fecha = models.DateTimeField(blank=True, null=True)
+    id_tipo_estado = models.IntegerField()
+    tipo_estado = models.CharField(max_length=50)
+    observaciones = models.CharField(max_length=50)
+    id_deposito_origen = models.IntegerField()
+    id_deposito_destino = models.IntegerField()
+    id_usuario_genero = models.IntegerField()
+class DetalleTraspasoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    id_traspaso = models.IntegerField()
+    id_articulo = models.IntegerField()
+    nombre_articulo = models.CharField(max_length=50)
+    cantidad_articulo = models.IntegerField()

@@ -34,5 +34,11 @@ urlpatterns = [
 
     path('unidades_medida/', views.get_unidades_medida), #Obtener todas las unidades de medida, llega a través de GET
 
+    # ---------- Gestion de existencias ---------- #
+
     path('existencias/', views.get_existencias), #Obtener todas las existencias, llega a través de GET
+
+    # ---------- Gestion de traspasos ---------- #
+
+    path('traspaso/', views.insert_traspaso) #Alta de traspaso, llega a través de POST
 ]
