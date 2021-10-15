@@ -517,14 +517,35 @@ def get_pedidos(request):
 def pedido_confirmado(request, pk):
     try:
         response = _db.get_data_from_procedure(connection = connection,
-                                                proc_name='sp_procesar_pedido_confirmado',
-                                                proc_params={
+                                                proc_name = 'sp_procesar_pedido_confirmado',
+                                                proc_params = {
                                                     'id_pedido': pk,
                                                     'id_usuario': request.user.id
                                                 })
-
     except Exception as e:
         print(e)
         return Response('No fue posible confirmar el pedido', status = status-status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response[0]['v_result'], status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def pedido_rechazado(request, pk):
+    try:
+        if request.POST['observaciones'] != '':
+            observaciones = request.POST['observaciones']
+        else:
+            observaciones = ''
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_procesar_pedido_rechazado',
+                                                proc_params = {
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id,
+                                                    'observaciones': observaciones
+                                                })
+    except Exception as e:
+        print(e)
+        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response[0]['v_result'], status = status.HTTP_200_OK)
