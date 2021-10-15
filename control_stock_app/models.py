@@ -292,3 +292,4 @@ class PedidoDto(models.Model):
     id_usuario_proceso = models.IntegerField()
     usuario_proceso = models.CharField(max_length=100)
     fh_procesado = models.DateTimeField()
+    detalles_pedido = []

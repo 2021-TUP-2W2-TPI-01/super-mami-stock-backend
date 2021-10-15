@@ -470,13 +470,22 @@ def get_unidades_medida(request):
 
 
     # --------- Gestion de pedidos --------- #
-class Deposito(APIView):
+class Pedido(APIView):
     """
     Acá va el GET, POST, PUT, DELETE de la entidad
     """
     def get(self, request, pk):
-        
-        pass
+        try:
+            pedido = obtener_pedido(pk)
+
+            response = PedidoSerializer(pedido)
+
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(response.data, status = status.HTTP_200_OK)
+
 
     def put(self, request, pk):
 
