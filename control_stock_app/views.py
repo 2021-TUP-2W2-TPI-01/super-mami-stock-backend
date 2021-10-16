@@ -366,7 +366,7 @@ class Articulo(APIView):
             return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def post(self, request, pk):
+    def post(self, request):
         try:
             articulo = ArticuloDto()
 
