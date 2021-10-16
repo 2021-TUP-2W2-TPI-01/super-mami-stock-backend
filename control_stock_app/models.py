@@ -275,3 +275,25 @@ class ArticuloDto(models.Model):
     id_unidad_medida = models.IntegerField()
     unidad_medida = models.CharField(max_length=50)
     cantidad_medida = models.IntegerField()
+
+
+class DetalleTraspasoDto(models.Model):
+    id = models.IntegerField(primary_key=True)
+    id_articulo = models.IntegerField()
+    articulo = models.CharField(max_length=50)
+    cantidad = models.IntegerField()
+
+class TraspasoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    fh_generacion = models.CharField(max_length=30)
+    id_tipo_estado = models.IntegerField()
+    tipo_estado = models.CharField(max_length=50)
+    id_deposito_origen = models.IntegerField()
+    deposito_origen = models.CharField(max_length=50)
+    id_deposito_destino = models.IntegerField()
+    deposito_destino = models.CharField(max_length=50)
+    observaciones = models.CharField(max_length=250)
+    usuario_genero = models.CharField(max_length=50)
+
+    detalle_traspaso = []

@@ -93,3 +93,24 @@ class UnidadesMedidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnidadesMedida
         fields = '__all__'
+
+
+class TraspasosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TraspasoDto
+        fields = ('id','fh_generacion','deposito_origen','deposito_destino','tipo_estado')
+
+
+
+class DetalleTraspasoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DetalleTraspasoDto
+        fields = '__all__'
+class TraspasoSerializer(serializers.ModelSerializer):
+
+    detalle_traspaso = serializers.ListField(child=DetalleTraspasoSerializer(many=True))
+    class Meta:
+        model = TraspasoDto
+        fields = ('id','fh_generacion','deposito_origen','deposito_destino','tipo_estado','detalle_traspaso')

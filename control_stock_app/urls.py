@@ -33,4 +33,12 @@ urlpatterns = [
     path('categorias/', views.get_categorias), #Obtener todas las categorías, llega a través de GET
 
     path('unidades_medida/', views.get_unidades_medida), #Obtener todas las unidades de medida, llega a través de GET
+
+
+    # --------- Gestión Recepción Traspasos ------- #
+    path('traspasos/', views.get_traspasos), #Obtener todas los traspasos, llega a través de GET
+    path('traspaso/<int:pk>/', views.get_traspaso), #Obtener un traspaso, llega a través de GET
+    path('traspaso/procesar/confirmado/<int:pk>/', views.procesar_traspaso_confirmado), # Procesar un traspaso confirmado, llega a través de POST
+    path('traspaso/procesar/modificado/<int:pk>/', views.procesar_traspaso_modificado), # Procesar un traspaso modificado, llega a través de POST
+
 ]
