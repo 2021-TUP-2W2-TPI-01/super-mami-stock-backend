@@ -12,7 +12,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
-from control_stock_app.controllers.traspasos_controller import obtener_traspaso, obtener_traspasos_al_deposito, traspaso_confirmado, traspaso_modificado
+from .controllers.traspasos_controller import *
 from .serializers import *
 from .data_access import db_helper as _db
 from .models import *
@@ -527,8 +527,27 @@ def procesar_traspaso_modificado(request, pk):
         traspaso.observaciones = request.data['observaciones']
         traspaso.detalle_traspaso = request.data['detalle_traspaso']
 
-        if traspaso_modificado(pk, request.user.id, traspaso):
+        if traspaso_modificado(request.user.id, traspaso):
             return Response('Registro exitoso', status=status.HTTP_200_OK)
+        else:
+            raise Exception
+
+    except Exception as e:
+        print(e)
+        return Response('No fúe posible procesar traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+
+@api_view(['POST'])
+def procesar_traspaso_rechazado(request, pk):
+    try:
+
+        traspaso = TraspasoDto()
+
+        traspaso.id = pk
+        traspaso.observaciones = request.data['observaciones']
+
+        if traspaso_rechazado(request.user.id, traspaso):
+            return Response('Traspaso rechazado', status=status.HTTP_200_OK)
         else:
             raise Exception
 

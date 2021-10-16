@@ -74,6 +74,7 @@ def actualizar_usuario(usuario, pk, flag):
         print(e)
         return False
 
+
 def obtener_usuario(pk):
     usuario = User.objects.get(id = pk)
     rol = RolesUsuarios.objects.filter(id_usuario = pk).values('id_tipo_rol')

@@ -54,8 +54,7 @@ def obtener_traspaso(id):
                                                                                 'id_usuario_genero__first_name',
                                                                                 'id_usuario_genero__last_name').get(pk=id)
                                                                                 
-        detalle = DetallesTraspaso.objects.select_related('id_articulo').filter(id_traspaso_id=traspaso['id']).values('id',
-                                                                                                                      'id_articulo',
+        detalle = DetallesTraspaso.objects.select_related('id_articulo').filter(id_traspaso_id=traspaso['id']).values('id_articulo',
                                                                                                                       'id_articulo__nombre',
                                                                                                                       'cantidad')
 
@@ -66,7 +65,6 @@ def obtener_traspaso(id):
         for det in detalle:
 
             lstDetalles.append({
-                'id' : det['id'],
                 'id_articulo' : det['id_articulo'],
                 'articulo' : det['id_articulo__nombre'],
                 'cantidad' : det['cantidad']
@@ -109,7 +107,7 @@ def traspaso_confirmado(id_traspaso, id_usuario):
             result = result[0]['v_result']
         
         if result == 'OK':
-            return True
+            resultado = True
     
     except Exception as e:
         print(e)
@@ -129,7 +127,7 @@ def traspaso_modificado(id_usuario, traspasoDto):
             detalleNuevo = DetallesTraspaso()
 
             detalleNuevo.id_traspaso_id = traspasoDto.id
-            detalleNuevo.id_articulo = det['id_articulo']
+            detalleNuevo.id_articulo_id = det['id_articulo']
             detalleNuevo.cantidad = det['cantidad']
 
             lstNuevoDetalle.append(detalleNuevo)
@@ -149,7 +147,7 @@ def traspaso_modificado(id_usuario, traspasoDto):
             result = result[0]['v_result']
         
         if result == 'OK':
-            return True
+            resultado = True
     
     except Exception as e:
         print(e)
@@ -157,7 +155,7 @@ def traspaso_modificado(id_usuario, traspasoDto):
     return resultado
 
 
-def traspaso_rechazado(id_traspaso, id_usuario, observacion):
+def traspaso_rechazado(id_usuario, traspasoDto):
 
     resultado = False
     try:
@@ -167,15 +165,15 @@ def traspaso_rechazado(id_traspaso, id_usuario, observacion):
         result = _db.get_data_from_procedure(connection=connection,
                                              proc_name='sp_procesar_traspaso_rechazado',
                                              proc_params={
-                                                    'p_id_traspaso': id_traspaso,
+                                                    'p_id_traspaso': traspasoDto.id,
                                                     'p_id_usuario' : id_usuario,
-                                                    'p_observacion' : observacion
+                                                    'p_observacion' : traspasoDto.observaciones
                                                 })
         if len(result) > 0:
             result = result[0]['v_result']
         
         if result == 'OK':
-            return True
+            resultado = True
     
     except Exception as e:
         print(e)

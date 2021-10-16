@@ -40,5 +40,6 @@ urlpatterns = [
     path('traspaso/<int:pk>/', views.get_traspaso), #Obtener un traspaso, llega a través de GET
     path('traspaso/procesar/confirmado/<int:pk>/', views.procesar_traspaso_confirmado), # Procesar un traspaso confirmado, llega a través de POST
     path('traspaso/procesar/modificado/<int:pk>/', views.procesar_traspaso_modificado), # Procesar un traspaso modificado, llega a través de POST
+    path('traspaso/procesar/rechazado/<int:pk>/', views.procesar_traspaso_rechazado), # Procesar un traspaso rechazado, llega a través de POST
 
 ]

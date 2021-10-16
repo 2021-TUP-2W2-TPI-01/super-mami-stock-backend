@@ -277,12 +277,6 @@ class ArticuloDto(models.Model):
     cantidad_medida = models.IntegerField()
 
 
-class DetalleTraspasoDto(models.Model):
-    id = models.IntegerField(primary_key=True)
-    id_articulo = models.IntegerField()
-    articulo = models.CharField(max_length=50)
-    cantidad = models.IntegerField()
-
 class TraspasoDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
