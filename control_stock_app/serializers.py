@@ -93,3 +93,9 @@ class UnidadesMedidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnidadesMedida
         fields = '__all__'
+
+class ExistenciasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExistenciaDto
+        fields = ('id_articulo', 'nombre_articulo','cantidad')
