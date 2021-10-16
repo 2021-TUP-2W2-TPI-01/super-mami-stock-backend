@@ -505,7 +505,7 @@ def get_existencias(request):
 def insert_traspaso(request):
     try:
 
-        traspaso = TraspasoDto()
+        traspaso = TraspasoDtoInsert()
 
         traspaso.id_deposito_origen = request.data['id_deposito_origen']
         traspaso.id_deposito_destino = request.data['id_deposito_destino']
