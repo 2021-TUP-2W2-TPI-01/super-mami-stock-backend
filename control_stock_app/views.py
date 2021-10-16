@@ -507,7 +507,7 @@ class Pedido(APIView):
 @api_view(['GET'])
 def get_pedidos(request):
     try:
-        pedidos = obtener_pedidos()
+        pedidos = obtener_pedidos(request.user)
 
         response = PedidosSerializer(pedidos, many = True)
     except Exception as e:
