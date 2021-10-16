@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+
+from .controllers.traspasos_controller import *
 from .serializers import *
 from .data_access import db_helper as _db
 from .models import *
@@ -19,6 +21,8 @@ from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
 from .controllers.articulo_controller import *
 from .controllers.pedido_controller import *
+from .controllers.existencia_controller import *
+
 
 
 @api_view(['POST'])
@@ -362,7 +366,7 @@ class Articulo(APIView):
             return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def post(self, request):
+    def post(self, request, pk):
         try:
             articulo = ArticuloDto()
 
@@ -593,3 +597,145 @@ def pedido_rechazado(request, pk):
         return Response('Pedido rechazado exitosamente', status = status.HTTP_200_OK)
     else:
         return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+      
+# ------------ Gestion Recepcion Traspaso ----------------
+@api_view(['GET'])
+def get_traspasos(request):
+    try:
+        traspasos = obtener_traspasos_al_deposito(request.user)
+
+        response = TraspasosSerializer(traspasos, many=True)
+
+        return Response(response.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)      
+        return Response('No fué posible obtener los traspasos', status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
+
+@api_view(['GET'])
+def get_traspaso(request, pk):
+    try:
+        response = obtener_traspaso(pk)
+
+
+        # el controller me lo devuelve ya serializado (a mano), 
+        # por eso no requiere serializarlo acá, ni hacer response.data
+        if response is not None:
+            
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            raise Exception
+
+    except Exception as e:
+        print(e)      
+        return Response('No fué posible obtener el traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
+
+@api_view(['POST'])
+def procesar_traspaso_confirmado(request, pk):
+    try:
+        
+        if traspaso_confirmado(pk, request.user.id):
+            return Response('Registro exitoso', status=status.HTTP_200_OK)
+        else:
+            raise Exception
+
+    except Exception as e:
+        print(e)
+        return Response('No fúe posible procesar traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
+
+
+@api_view(['POST'])
+def procesar_traspaso_modificado(request, pk):
+    try:
+
+        traspaso = TraspasoDto()
+
+        traspaso.id = pk
+        traspaso.observaciones = request.data['observaciones']
+        traspaso.detalle_traspaso = request.data['detalle_traspaso']
+
+        if traspaso_modificado(request.user.id, traspaso):
+            return Response('Registro exitoso', status=status.HTTP_200_OK)
+        else:
+            raise Exception
+
+    except Exception as e:
+        print(e)
+        return Response('No fúe posible procesar traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+
+@api_view(['POST'])
+def procesar_traspaso_rechazado(request, pk):
+    try:
+
+        traspaso = TraspasoDto()
+
+        traspaso.id = pk
+        traspaso.observaciones = request.data['observaciones']
+
+        if traspaso_rechazado(request.user.id, traspaso):
+            return Response('Traspaso rechazado', status=status.HTTP_200_OK)
+        else:
+            raise Exception
+
+    except Exception as e:
+        print(e)
+        return Response('No fúe posible procesar traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+      
+@api_view(['GET'])
+def get_deposito_usuario(request):
+    try:
+        deposito = obtener_deposito_usuario(request.user)
+
+        if deposito is not None:
+            response = DepositosInsertSerializer(deposito)
+        else:
+            raise Exception
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_existencias(request):
+    try:
+        existencias = obtener_existencias(request.user)
+
+        response = ExistenciasSerializer(existencias, many = True)
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las existencias', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def insert_traspaso(request):
+    try:
+
+        traspaso = TraspasoDtoInsert()
+
+        traspaso.id_deposito_origen = request.data['id_deposito_origen']
+        traspaso.id_deposito_destino = request.data['id_deposito_destino']
+        traspaso.id_usuario_genero = request.user.id
+        
+        detalle_traspaso = request.data['detalle_traspaso']
+
+        if alta_traspaso(traspaso, detalle_traspaso):
+            return Response('Traspaso realizado con éxito', status = status.HTTP_200_OK)
+
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible realizar el traspaso', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+
+
+
+

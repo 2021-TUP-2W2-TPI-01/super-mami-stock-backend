@@ -116,3 +116,18 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoDto
         fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'observaciones', 'proveedor', 'deposito_destino', 'detalles_pedido')
+
+        
+class TraspasosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TraspasoDto
+        fields = ('id','fh_generacion','deposito_origen','deposito_destino','tipo_estado')
+
+
+class ExistenciasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExistenciaDto
+        fields = ('id_articulo', 'nombre_articulo','cantidad')
+
