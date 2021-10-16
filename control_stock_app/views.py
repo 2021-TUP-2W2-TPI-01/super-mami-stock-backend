@@ -532,7 +532,11 @@ def pedido_confirmado(request, pk):
 @api_view(['POST'])
 def pedido_modificado(request, pk):
     try:
+        if not delete_detalles_pedido():
+            raise Exception('Error al eliminar los detalles del pedido')
+
         pass
+
     except Exception as e:
         print(e)
         return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)

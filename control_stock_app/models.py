@@ -293,3 +293,10 @@ class PedidoDto(models.Model):
     usuario_proceso = models.CharField(max_length=100)
     fh_procesado = models.DateTimeField()
     detalles_pedido = []
+
+
+class DetallesPedidoDto(models.Model):
+
+    id_pedido = models.IntegerField()
+    id_articulo = models.IntegerField()
+    cantidad = models.IntegerField()
