@@ -101,3 +101,10 @@ class TraspasosSerializer(serializers.ModelSerializer):
         model = TraspasoDto
         fields = ('id','fh_generacion','deposito_origen','deposito_destino','tipo_estado')
 
+
+class ExistenciasSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExistenciaDto
+        fields = ('id_articulo', 'nombre_articulo','cantidad')
+

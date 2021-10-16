@@ -142,3 +142,16 @@ def validar_nombre_deposito_insert(nom):
         return False
     else:
         return True
+
+
+def obtener_deposito_usuario(user):
+    try:
+        deposito_id = Depositos.objects.get(id_encargado=user).id
+
+        deposito = obtener_deposito(deposito_id)
+
+        return deposito
+
+    except Exception as e:
+        print(e)
+        return None

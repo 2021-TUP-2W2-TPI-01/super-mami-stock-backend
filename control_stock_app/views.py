@@ -12,7 +12,9 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
+
 from .controllers.traspasos_controller import *
+
 from .serializers import *
 from .data_access import db_helper as _db
 from .models import *
@@ -20,6 +22,7 @@ from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
 from .controllers.articulo_controller import *
+from .controllers.existencia_controller import *
 
 
 @api_view(['POST'])
@@ -363,7 +366,7 @@ class Articulo(APIView):
             return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def post(self, request):
+    def post(self, request, pk):
         try:
             articulo = ArticuloDto()
 
@@ -554,3 +557,59 @@ def procesar_traspaso_rechazado(request, pk):
     except Exception as e:
         print(e)
         return Response('No fúe posible procesar traspaso', status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+      
+@api_view(['GET'])
+def get_deposito_usuario(request):
+    try:
+        deposito = obtener_deposito_usuario(request.user)
+
+        if deposito is not None:
+            response = DepositosInsertSerializer(deposito)
+        else:
+            raise Exception
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_existencias(request):
+    try:
+        existencias = obtener_existencias(request.user)
+
+        response = ExistenciasSerializer(existencias, many = True)
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener las existencias', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def insert_traspaso(request):
+    try:
+
+        traspaso = TraspasoDtoInsert()
+
+        traspaso.id_deposito_origen = request.data['id_deposito_origen']
+        traspaso.id_deposito_destino = request.data['id_deposito_destino']
+        traspaso.id_usuario_genero = request.user.id
+        
+        detalle_traspaso = request.data['detalle_traspaso']
+
+        if alta_traspaso(traspaso, detalle_traspaso):
+            return Response('Traspaso realizado con éxito', status = status.HTTP_200_OK)
+
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible realizar el traspaso', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+
+
+
+
