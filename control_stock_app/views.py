@@ -470,6 +470,23 @@ def get_unidades_medida(request):
 
     return Response(response.data, status = status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_deposito_usuario(request):
+    try:
+        deposito = obtener_deposito_usuario(request.user)
+
+        if deposito is not None:
+            response = DepositosInsertSerializer(deposito)
+        else:
+            raise Exception
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener el depósito', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
 @api_view(['GET'])
 def get_existencias(request):
     try:
@@ -482,6 +499,7 @@ def get_existencias(request):
         return Response('No fue posible obtener las existencias', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     return Response(response.data, status = status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def insert_traspaso(request):
