@@ -12,9 +12,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
-
 from .controllers.traspasos_controller import *
-
 from .serializers import *
 from .data_access import db_helper as _db
 from .models import *
@@ -22,7 +20,9 @@ from rest_framework.authtoken.models import Token
 from .controllers.usuario_controller import *
 from .controllers.deposito_controller import *
 from .controllers.articulo_controller import *
+from .controllers.pedido_controller import *
 from .controllers.existencia_controller import *
+
 
 
 @api_view(['POST'])
@@ -361,7 +361,7 @@ class Articulo(APIView):
                         return Response('Artículo actualizado correctamente', status = status.HTTP_200_OK)
                 else:
                     return Response('Error en los datos', status = status.HTTP_400_BAD_REQUEST)
-        except:
+        except Exception as e:
             print(e)
             return Response('No fue posible actualizar el artículo', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -473,6 +473,132 @@ def get_unidades_medida(request):
     return Response(response.data, status = status.HTTP_200_OK)
 
 
+    # --------- Gestion de pedidos --------- #
+class Pedido(APIView):
+    """
+    Acá va el GET, POST, PUT, DELETE de la entidad
+    """
+    def get(self, request, pk):
+        try:
+            pedido = obtener_pedido(pk)
+
+            response = PedidoSerializer(pedido)
+
+        except Exception as e:
+            print(e)
+            return Response('No fue posible obtener el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(response.data, status = status.HTTP_200_OK)
+
+
+    def put(self, request, pk):
+
+        pass
+
+    def post(self, request):
+        
+        pass
+
+    def delete(self, request, pk):
+        
+        pass
+
+
+@api_view(['GET'])
+def get_pedidos(request):
+    try:
+        pedidos = obtener_pedidos()
+
+        response = PedidosSerializer(pedidos, many = True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener los pedidos', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def pedido_confirmado(request, pk):
+    try:
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_procesar_pedido_confirmado',
+                                                proc_params = {
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id
+                                                })
+    except Exception as e:
+        print(e)
+        return Response('No fue posible confirmar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido confirmado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible confirmar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+def pedido_modificado(request, pk):
+    try:
+        detalles_pedido = request.data['detalles_pedido']
+        lst_detalles_pedido = armado_lista(pk, detalles_pedido)
+
+        if not delete_detalles_pedido(pk):
+            raise Exception('Error al eliminar los detalles del pedido')
+
+        insert_detalles_pedido(lst_detalles_pedido)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible modificar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    try:
+        if request.data['observaciones'] != '':
+            observaciones = request.data['observaciones']
+        else:
+            observaciones = ''
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_procesar_pedido_modificado',
+                                                proc_params = {
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id,
+                                                    'observaciones': observaciones
+                                                })
+    
+    except Exception as e:
+        print(e)
+        return Response('No fue posible confirmar el pedido modificado', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido modificado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible modificar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+def pedido_rechazado(request, pk):
+    try:
+        if request.POST['observaciones'] != '':
+            observaciones = request.POST['observaciones']
+        else:
+            observaciones = ''
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_procesar_pedido_rechazado',
+                                                proc_params = {
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id,
+                                                    'observaciones': observaciones
+                                                })
+    except Exception as e:
+        print(e)
+        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido rechazado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+      
 # ------------ Gestion Recepcion Traspaso ----------------
 @api_view(['GET'])
 def get_traspasos(request):

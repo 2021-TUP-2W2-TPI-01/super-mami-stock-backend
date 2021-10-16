@@ -95,6 +95,29 @@ class UnidadesMedidaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PedidosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PedidoDto
+        fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'proveedor', 'deposito_destino')
+
+
+class DetallesPedidoSerializer(serializers.Serializer):
+
+    id = serializers.IntegerField()
+    id_articulo = serializers.IntegerField(source = 'id_articulo__id')
+    nombre = serializers.CharField(source = 'id_articulo__nombre', max_length = 50)
+    cantidad = serializers.IntegerField()
+
+
+class PedidoSerializer(serializers.ModelSerializer):
+
+    detalles_pedido = DetallesPedidoSerializer(many = True)
+    class Meta:
+        model = PedidoDto
+        fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'observaciones', 'proveedor', 'deposito_destino', 'detalles_pedido')
+
+        
 class TraspasosSerializer(serializers.ModelSerializer):
 
     class Meta:
