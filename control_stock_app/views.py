@@ -526,22 +526,48 @@ def pedido_confirmado(request, pk):
         print(e)
         return Response('No fue posible confirmar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response(response[0]['v_result'], status = status.HTTP_200_OK)
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido confirmado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible confirmar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])
 def pedido_modificado(request, pk):
     try:
-        if not delete_detalles_pedido():
+        detalles_pedido = request.data['detalles_pedido']
+        lst_detalles_pedido = armado_lista(pk, detalles_pedido)
+
+        if not delete_detalles_pedido(pk):
             raise Exception('Error al eliminar los detalles del pedido')
 
-        pass
-
+        insert_detalles_pedido(lst_detalles_pedido)
     except Exception as e:
         print(e)
-        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response('No fue posible modificar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    try:
+        if request.data['observaciones'] != '':
+            observaciones = request.data['observaciones']
+        else:
+            observaciones = ''
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_procesar_pedido_modificado',
+                                                proc_params = {
+                                                    'id_pedido': pk,
+                                                    'id_usuario': request.user.id,
+                                                    'observaciones': observaciones
+                                                })
     
+    except Exception as e:
+        print(e)
+        return Response('No fue posible confirmar el pedido modificado', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido modificado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible modificar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])
@@ -563,4 +589,7 @@ def pedido_rechazado(request, pk):
         print(e)
         return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response(response[0]['v_result'], status = status.HTTP_200_OK)
+    if response[0]['v_result'] == 'OK':
+        return Response('Pedido rechazado exitosamente', status = status.HTTP_200_OK)
+    else:
+        return Response('No fue posible rechazar el pedido', status = status.HTTP_500_INTERNAL_SERVER_ERROR)

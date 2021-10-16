@@ -45,6 +45,23 @@ def obtener_pedido(pk):
     return p
 
 
+def armado_lista(pk, detalles_pedido):
+    pedido = Pedidos.objects.get(id = pk)
+
+    lst_detalles_pedido = []
+
+    for detalle in detalles_pedido:
+        det_ped = DetallesPedido()
+
+        det_ped.id_pedido = pedido
+        det_ped.id_articulo_id = detalle['id_articulo']
+        det_ped.cantidad = detalle['cantidad']
+
+        lst_detalles_pedido.append(det_ped)
+
+    return lst_detalles_pedido
+
+
 def delete_detalles_pedido(pk):
     try:
         DetallesPedido.objects.filter(id_pedido = pk).delete()
@@ -55,5 +72,5 @@ def delete_detalles_pedido(pk):
     return True
 
 
-def insert_detalles_pedido(detalles_pedido):
-    pass
+def insert_detalles_pedido(lst_detalles_pedido):
+    DetallesPedido.objects.bulk_create(lst_detalles_pedido)
