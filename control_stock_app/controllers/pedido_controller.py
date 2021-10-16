@@ -46,4 +46,14 @@ def obtener_pedido(pk):
 
 
 def delete_detalles_pedido(pk):
-    DetallesPedido.objects.delete
+    try:
+        DetallesPedido.objects.filter(id_pedido = pk).delete()
+    except Exception as e:
+        print(e)
+        return False
+
+    return True
+
+
+def insert_detalles_pedido(detalles_pedido):
+    pass
