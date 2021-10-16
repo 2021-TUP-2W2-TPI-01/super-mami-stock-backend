@@ -54,7 +54,7 @@ urlpatterns = [
     # ---------- Gestion de traspasos ---------- #
   
     # ---------- Generacion ---------- #
-    path('traspaso/', views.insert_traspaso) #Alta de traspaso, llega a través de POST
+    path('traspaso/', views.insert_traspaso), #Alta de traspaso, llega a través de POST
   
     # --------- Recepcion ------- #
     path('traspasos/', views.get_traspasos), #Obtener todas los traspasos, llega a través de GET
