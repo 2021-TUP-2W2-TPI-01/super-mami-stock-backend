@@ -288,7 +288,7 @@ class ExistenciaDto(models.Model):
     id_lote = models.IntegerField()
 
 
-class TraspasoDto(models.Model):
+class TraspasoDtoInsert(models.Model):
 
     id = models.IntegerField(primary_key=True)
     fecha = models.DateTimeField(blank=True, null=True)
@@ -298,6 +298,7 @@ class TraspasoDto(models.Model):
     id_deposito_origen = models.IntegerField()
     id_deposito_destino = models.IntegerField()
     id_usuario_genero = models.IntegerField()
+    
 class DetalleTraspasoDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
