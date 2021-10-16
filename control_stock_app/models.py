@@ -277,6 +277,23 @@ class ArticuloDto(models.Model):
     unidad_medida = models.CharField(max_length=50)
     cantidad_medida = models.IntegerField()
 
+
+class TraspasoDto(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    fh_generacion = models.CharField(max_length=30)
+    id_tipo_estado = models.IntegerField()
+    tipo_estado = models.CharField(max_length=50)
+    id_deposito_origen = models.IntegerField()
+    deposito_origen = models.CharField(max_length=50)
+    id_deposito_destino = models.IntegerField()
+    deposito_destino = models.CharField(max_length=50)
+    observaciones = models.CharField(max_length=250)
+    usuario_genero = models.CharField(max_length=50)
+
+    detalle_traspaso = []
+
+    
 class ExistenciaDto(models.Model):
 
     id_articulo = models.IntegerField(primary_key=True)
@@ -299,6 +316,7 @@ class TraspasoDtoInsert(models.Model):
     id_deposito_destino = models.IntegerField()
     id_usuario_genero = models.IntegerField()
     
+    
 class DetalleTraspasoDto(models.Model):
 
     id = models.IntegerField(primary_key=True)
@@ -306,3 +324,4 @@ class DetalleTraspasoDto(models.Model):
     id_articulo = models.IntegerField()
     nombre_articulo = models.CharField(max_length=50)
     cantidad_articulo = models.IntegerField()
+
