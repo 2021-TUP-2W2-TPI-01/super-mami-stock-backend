@@ -48,6 +48,14 @@ class DepositosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class DepositosSerializerSmall(serializers.ModelSerializer):
+
+    class Meta:
+        model = DepositoDto
+        fields = ('id','nombre')
+
+
+
 class DepositosInsertSerializer(serializers.ModelSerializer):
 
     class Meta:

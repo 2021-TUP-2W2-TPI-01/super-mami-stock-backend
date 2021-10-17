@@ -691,7 +691,7 @@ def get_deposito_usuario(request):
         deposito = obtener_deposito_usuario(request.user)
 
         if deposito is not None:
-            response = DepositosInsertSerializer(deposito)
+            response = DepositosSerializerSmall(deposito, many=False)
         else:
             raise Exception
     except Exception as e:
@@ -704,15 +704,15 @@ def get_deposito_usuario(request):
 @api_view(['GET'])
 def get_existencias(request):
     try:
-        existencias = obtener_existencias(request.user)
+        response = obtener_existencias(request.user)
 
-        response = ExistenciasSerializer(existencias, many = True)
+        # response = ExistenciasSerializer(existencias, many = True)
     
     except Exception as e:
         print(e)
         return Response('No fue posible obtener las existencias', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    return Response(response.data, status = status.HTTP_200_OK)
+    return Response(response, status = status.HTTP_200_OK)
 
 
 @api_view(['POST'])

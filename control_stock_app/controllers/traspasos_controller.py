@@ -1,5 +1,3 @@
-
-import re
 from ..models import *
 from django.db import connection
 from ..data_access import db_helper as _db
