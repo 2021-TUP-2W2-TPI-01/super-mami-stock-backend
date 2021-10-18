@@ -7,10 +7,17 @@ def obtener_existencias(encargado):
    
     deposito = Depositos.objects.filter(id_encargado = encargado)
 
+    if deposito.count() > 0:
+        deposito = deposito[0].id
+    else:
+        # en este caso, no es un encargado si no otro usuario que tiene asignado la visualizacion del deposito
+        deposito = DepositosUsuarios.objects.filter(id_usuario=encargado)
+        deposito = deposito[0].id_deposito_id
+
     existencias = _db.get_data_from_procedure(connection=connection,
                                              proc_name='sp_get_existencias_deposito',
                                              proc_params={
-                                                    'p_id_deposito': deposito[0].id,
+                                                    'p_id_deposito': deposito,
                                                 })
     return existencias
     """
