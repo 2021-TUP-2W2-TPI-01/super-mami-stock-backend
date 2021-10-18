@@ -152,7 +152,7 @@ def obtener_deposito_usuario(user):
             deposito_usuario = Depositos.objects.get(id_encargado=user)
         except:
             deposito_usuario = DepositosUsuarios.objects.get(id_usuario=user)
-            deposito_usuario = Depositos.objects.get(id=deposito_usuario.id_deposito)
+            deposito_usuario = Depositos.objects.get(id=deposito_usuario.id_deposito_id)
 
         deposito = DepositoDto()
         
