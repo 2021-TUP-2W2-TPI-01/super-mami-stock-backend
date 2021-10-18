@@ -146,7 +146,12 @@ def validar_nombre_deposito_insert(nom):
 
 def obtener_deposito_usuario(user):
     try:
-        deposito_usuario = Depositos.objects.get(id_encargado=user)
+        deposito_usuario = None 
+
+        try:
+            deposito_usuario = Depositos.objects.get(id_encargado=user)
+        except:
+            deposito_usuario = DepositosUsuarios.objects.get(id_usuario=user)
 
         deposito = DepositoDto()
         
