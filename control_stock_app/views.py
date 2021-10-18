@@ -725,7 +725,12 @@ def insert_traspaso(request):
         traspaso.id_deposito_destino = request.data['id_deposito_destino']
         traspaso.id_usuario_genero = request.user.id
         
-        detalle_traspaso = eval(request.data['detalle_traspaso'])
+        detalle_traspaso = None
+
+        try:
+            detalle_traspaso = eval(request.data['detalle_traspaso'])
+        except:
+            detalle_traspaso = request.data['detalle_traspaso']
 
         if alta_traspaso(traspaso, detalle_traspaso):
             return Response('Traspaso realizado con éxito', status = status.HTTP_200_OK)
