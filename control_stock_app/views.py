@@ -654,7 +654,7 @@ def procesar_traspaso_modificado(request, pk):
 
         traspaso.id = pk
         traspaso.observaciones = request.data['observaciones']
-        traspaso.detalle_traspaso = request.data['detalle_traspaso']
+        traspaso.detalle_traspaso = eval(request.data['detalle_traspaso'])
 
         if traspaso_modificado(request.user.id, traspaso):
             return Response('Registro exitoso', status=status.HTTP_200_OK)

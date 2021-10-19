@@ -84,36 +84,37 @@ def obtener_traspaso(id):
                                                                                 'id_deposito_origen__nombre',
                                                                                 'id_deposito_destino__nombre',
                                                                                 'id_usuario_genero__first_name',
-                                                                                'id_usuario_genero__last_name').get(pk=id)
-                                                                                
+                                                                                'id_usuario_genero__last_name', 'id_usuario_proceso__first_name', 'id_usuario_proceso__last_name','fh_procesado', 'observaciones').get(pk=id)
+
         detalle = DetallesTraspaso.objects.select_related('id_articulo').filter(id_traspaso_id=traspaso['id']).values('id_articulo',
                                                                                                                       'id_articulo__nombre',
                                                                                                                       'cantidad')
 
-        
         # Serializado a mano
         # -----------------------------------
 
         for det in detalle:
 
             lstDetalles.append({
-                'id_articulo' : det['id_articulo'],
-                'articulo' : det['id_articulo__nombre'],
-                'cantidad' : det['cantidad']
+                'id_articulo': det['id_articulo'],
+                'articulo': det['id_articulo__nombre'],
+                'cantidad': det['cantidad']
             })
 
-        
-
         result['id'] = traspaso['id']
-        result['fh_generacion'] = datetime.strftime(traspaso['fh_generacion'], '%d-%m-%Y %H:%M')
+        result['fh_generacion'] = traspaso['fh_generacion']
         result['tipo_estado'] = traspaso['id_tipo_estado__descripcion']
         result['deposito_origen'] = traspaso['id_deposito_origen__nombre']
         result['deposito_destino'] = traspaso['id_deposito_destino__nombre']
         result['usuario_genero'] = f'{traspaso["id_usuario_genero__first_name"]} {traspaso["id_usuario_genero__last_name"]}'
+        result['usuario_proceso'] = f'{traspaso["id_usuario_proceso__first_name"]} {traspaso["id_usuario_proceso__last_name"]}'
+        if traspaso['fh_procesado'] is not None:
+            result['fh_procesado'] = traspaso['fh_procesado']
+        result['observaciones'] = traspaso['observaciones']
 
         result['detalle_traspaso'] = lstDetalles
 
-         # -----------------------------------
+        # -----------------------------------
 
         return result
 
@@ -161,6 +162,7 @@ def traspaso_modificado(id_usuario, traspasoDto):
             detalleNuevo.id_traspaso_id = traspasoDto.id
             detalleNuevo.id_articulo_id = det['id_articulo']
             detalleNuevo.cantidad = det['cantidad']
+
 
             lstNuevoDetalle.append(detalleNuevo)
 
