@@ -123,7 +123,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     detalles_pedido = DetallesPedidoSerializer(many = True)
     class Meta:
         model = PedidoDto
-        fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'observaciones', 'proveedor', 'deposito_destino', 'detalles_pedido')
+        fields = ('id', 'fecha', 'numero_remito_asociado', 'tipo_estado', 'observaciones', 'proveedor', 'deposito_destino', 'detalles_pedido','fh_procesado','usuario_proceso')
 
         
 class TraspasosSerializer(serializers.ModelSerializer):

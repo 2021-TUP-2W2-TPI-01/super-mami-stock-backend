@@ -539,7 +539,7 @@ def pedido_confirmado(request, pk):
 @api_view(['POST'])
 def pedido_modificado(request, pk):
     try:
-        detalles_pedido = request.data['detalles_pedido']
+        detalles_pedido = eval(request.data['detalles_pedido'])
         lst_detalles_pedido = armado_lista(pk, detalles_pedido)
 
         if not delete_detalles_pedido(pk):

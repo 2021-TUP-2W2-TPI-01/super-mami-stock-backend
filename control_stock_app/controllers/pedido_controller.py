@@ -27,8 +27,8 @@ def obtener_pedidos(usuario):
 
 def obtener_pedido(pk):
 
-    pedido = Pedidos.objects.select_related('id_proveedor', 'id_tipo_estado', 'id_deposito_destino').filter(id = pk).values('id',
-     'fecha', 'numero_remito_asociado', 'id_tipo_estado__descripcion', 'observaciones', 'id_proveedor__descripcion', 'id_deposito_destino__nombre')
+    pedido = Pedidos.objects.select_related('id_proveedor', 'id_tipo_estado', 'id_deposito_destino','id_usuario_proceso').filter(id = pk).values('id',
+     'fecha', 'numero_remito_asociado', 'id_tipo_estado__descripcion', 'observaciones', 'id_proveedor__descripcion', 'id_deposito_destino__nombre', 'fh_procesado', 'id_usuario_proceso','id_usuario_proceso__first_name','id_usuario_proceso__last_name')
 
     detalles_pedido = DetallesPedido.objects.select_related('id_pedido', 'id_articulo').filter(id_pedido = pk).values('id', 'id_articulo__id', 'id_articulo__nombre', 'cantidad')
 
@@ -41,6 +41,13 @@ def obtener_pedido(pk):
     p.observaciones = pedido[0]['observaciones']
     p.proveedor = pedido[0]['id_proveedor__descripcion']
     p.deposito_destino = pedido[0]['id_deposito_destino__nombre']
+
+    if pedido[0]['fh_procesado'] is not None:
+        p.fh_procesado = pedido[0]['fh_procesado']
+
+    if pedido[0]['id_usuario_proceso'] is not None:
+        p.usuario_proceso = f'{pedido[0]["id_usuario_proceso__first_name"]} {pedido[0]["id_usuario_proceso__last_name"]}'
+    
     
     p.detalles_pedido = list(detalles_pedido)
 
