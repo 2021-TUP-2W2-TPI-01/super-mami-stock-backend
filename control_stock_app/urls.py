@@ -63,4 +63,7 @@ urlpatterns = [
     path('traspaso/procesar/modificado/<int:pk>/', views.procesar_traspaso_modificado), # Procesar un traspaso modificado, llega a través de POST
     path('traspaso/procesar/rechazado/<int:pk>/', views.procesar_traspaso_rechazado), # Procesar un traspaso rechazado, llega a través de POST
 
+
+    # ---------- Gestion de reportes ---------- #
+    path('reportes/cantidad_movimientos_depositos/', views.get_reporte_cantidad_movimientos_depositos),
 ]

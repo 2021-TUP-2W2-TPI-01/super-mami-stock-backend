@@ -741,6 +741,28 @@ def insert_traspaso(request):
         return Response('No fue posible realizar el traspaso', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
+    # --------- Gestion de reportes --------- #
+@api_view(['POST'])
+def get_reporte_cantidad_movimientos_depositos(request):
+    try:
+        p_fecha_desde = request.data['fecha_desde']
+        p_fecha_hasta = request.data['fecha_hasta']
 
+        if request.data['depositos'] == 'todos':
+            p_depositos = None
+        else:
+            p_depositos = request.data['depositos']
 
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_reporte_movimientos_por_deposito',
+                                                proc_params = {
+                                                    'p_depositos': p_depositos,
+                                                    'p_fecha_desde': p_fecha_desde,
+                                                    'p_fecha_hasta': p_fecha_hasta
+                                                })
 
+    except Exception as e:
+        print(e)
+        return Response('No fue posible consultar el reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response, status = status.HTTP_200_OK)
