@@ -66,4 +66,5 @@ urlpatterns = [
 
     # ---------- Gestion de reportes ---------- #
     path('reportes/cantidad_movimientos_depositos/', views.get_reporte_cantidad_movimientos_depositos),
+    path('reportes/stock_articulo_depositos/', views.get_reporte_stock_articulo),
 ]

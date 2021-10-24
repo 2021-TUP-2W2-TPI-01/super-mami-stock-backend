@@ -766,3 +766,22 @@ def get_reporte_cantidad_movimientos_depositos(request):
         return Response('No fue posible consultar el reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(response, status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def get_reporte_stock_articulo(request):
+    try:
+        p_articulo = request.data['articulo']
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_reporte_stock_articulos',
+                                                proc_params = {
+                                                    'p_articulo': p_articulo
+                                                })
+
+    except Exception as e:
+        print(e)
+        return Response('No fue posible consultar el reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response, status = status.HTTP_200_OK)
+
