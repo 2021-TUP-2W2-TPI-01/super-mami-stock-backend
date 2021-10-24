@@ -12,6 +12,8 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
+from control_stock_app.controllers.tipos_estados_controller import obtener_tipos_estados
+
 from .controllers.traspasos_controller import *
 from .serializers import *
 from .data_access import db_helper as _db
@@ -785,3 +787,65 @@ def get_reporte_stock_articulo(request):
 
     return Response(response, status = status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def get_tipos_estados(request):
+    try:
+        tipos_estados = obtener_tipos_estados()
+
+        response = TiposEstadosSerializer(tipos_estados, many=True)
+    except Exception as e:
+        print(e)
+        return Response('No fue posible obtener los estados', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(response.data, status = status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+def get_reporte_movimientos_deposito(request):
+    try:
+        msg_error = ''
+
+        p_fecha_desde = request.data['fecha_desde']
+        p_fecha_hasta = request.data['fecha_hasta']
+        p_tipos_estado = request.data['tipos_estados']
+        p_tipos_movimientos = request.data['tipos_movimientos']
+
+        id_deposito = None
+
+        try:
+            id_deposito = Depositos.objects.get(id_encargado=request.user).id
+        except:
+            msg_error = 'El usuario no posee un depósito asignado para generar el reporte'
+
+        if p_fecha_desde is None or p_fecha_desde == '' or p_fecha_hasta is None or p_fecha_hasta == '' :
+            msg_error = 'Las fechas son obligatorias'
+
+        if p_tipos_estado is None or p_tipos_estado == '':
+            msg_error = 'Es obligatorio al menos un estado'
+
+        if p_tipos_movimientos is None or p_tipos_movimientos == '':
+            msg_error = 'Es obligatorio al menos un tipo de movimiento'
+
+        if msg_error == '':
+
+            response = _db.get_data_from_procedure(connection = connection,
+                                                    proc_name = 'sp_reporte_moviemientos_deposito',
+                                                    proc_params = {
+                                                        'p_id_deposito': id_deposito,
+                                                        'p_fecha_desde': p_fecha_desde,
+                                                        'p_fecha_hasta': p_fecha_hasta,
+                                                        'p_tipos_estado': p_tipos_estado,
+                                                        'p_tipos_movimientos': p_tipos_movimientos
+                                                })
+
+            return Response(response, status = status.HTTP_200_OK)
+        else:
+            return Response(msg_error, status = status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        print(e)
+        return Response('Ocurrió un error al obtener reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    

@@ -40,6 +40,12 @@ class LocalidadesSerializer(serializers.ModelSerializer):
         model = Localidades
         fields = '__all__'
 
+class TiposEstadosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TiposEstado
+        fields = '__all__'
+
 
 class DepositosSerializer(serializers.ModelSerializer):
 
