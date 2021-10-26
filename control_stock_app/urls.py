@@ -70,5 +70,5 @@ urlpatterns = [
     path('reportes/cantidad_movimientos_depositos/', views.get_reporte_cantidad_movimientos_depositos),
     path('reportes/stock_articulo_depositos/', views.get_reporte_stock_articulo),
     path('reportes/movimientos_deposito/', views.get_reporte_movimientos_deposito),
-    path('reportes/historico_stock/', views.get_reporte_stock_articulo),
+    path('reportes/historico_stock/', views.reporte_historico_stock),
 ]

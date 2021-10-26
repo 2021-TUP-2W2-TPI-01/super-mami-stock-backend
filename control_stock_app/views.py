@@ -802,7 +802,7 @@ def get_tipos_estados(request):
 
 
 @api_view(['POST'])
-def get_reporte_stock_articulo(request):
+def reporte_historico_stock(request):
     try:
         p_articulo = request.data['articulo']
         p_deposito = request.data['deposito']
