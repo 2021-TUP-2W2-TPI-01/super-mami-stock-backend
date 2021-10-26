@@ -801,6 +801,25 @@ def get_tipos_estados(request):
     return Response(response.data, status = status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def get_reporte_stock_articulo(request):
+    try:
+        p_articulo = request.data['articulo']
+        p_deposito = request.data['deposito']
+
+        response = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_reporte_historico_stock',
+                                                proc_params = {
+                                                    'p_articulo': p_articulo,
+                                                    'p_deposito': p_deposito
+                                                })
+
+    except Exception as e:
+        print(e)
+        return Response('No fue posible consultar el reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(response, status = status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def get_reporte_movimientos_deposito(request):
