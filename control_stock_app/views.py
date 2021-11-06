@@ -755,19 +755,34 @@ def get_reporte_cantidad_movimientos_depositos(request):
         else:
             p_depositos = request.data['depositos']
 
-        response = _db.get_data_from_procedure(connection = connection,
+        resultado = {}
+
+        
+
+        reporte_depositos = _db.get_data_from_procedure(connection = connection,
                                                 proc_name = 'sp_reporte_movimientos_por_deposito',
+                                                proc_params = {
+                                                    'p_depositos': None,
+                                                    'p_fecha_desde': p_fecha_desde,
+                                                    'p_fecha_hasta': p_fecha_hasta
+                                                })
+
+        reporte_por_deposito = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_reporte_productividad_deposito',
                                                 proc_params = {
                                                     'p_depositos': p_depositos,
                                                     'p_fecha_desde': p_fecha_desde,
                                                     'p_fecha_hasta': p_fecha_hasta
                                                 })
+        
+        resultado['reporte_depositos'] = reporte_depositos
+        resultado['reporte_por_deposito'] = reporte_por_deposito
 
     except Exception as e:
         print(e)
         return Response('No fue posible consultar el reporte', status = status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response(response, status = status.HTTP_200_OK)
+    return Response(resultado, status = status.HTTP_200_OK)
 
 
 @api_view(['POST'])
