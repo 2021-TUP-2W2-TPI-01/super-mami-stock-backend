@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&y05%gvqzhs&-(@7lchfltqmy5qgg2v#q%a&6!a4zn_bmoyog%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'super_mami_stock_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SuperMamiStock_Dev',
-        'USER': 'web_app_user',
-        'PASSWORD': 'WebAppUser!!',
-        'HOST': '26.100.251.19',
+        'NAME': 'stockeanding',
+        'USER': 'admin',
+        'PASSWORD': 'Q1W2E3R4T5Y6!!',
+        'HOST': 'stockeanding.cbclozisgrlj.us-east-2.rds.amazonaws.com',
         'PORT': '3306'
     }
 }
