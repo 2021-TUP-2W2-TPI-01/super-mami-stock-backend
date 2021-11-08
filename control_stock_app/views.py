@@ -770,13 +770,22 @@ def get_reporte_cantidad_movimientos_depositos(request):
         reporte_por_deposito = _db.get_data_from_procedure(connection = connection,
                                                 proc_name = 'sp_reporte_productividad_deposito',
                                                 proc_params = {
-                                                    'p_depositos': p_depositos,
+                                                    'p_deposito': p_depositos,
+                                                    'p_fecha_desde': p_fecha_desde,
+                                                    'p_fecha_hasta': p_fecha_hasta
+                                                })
+                        
+        reporte_cantidades = _db.get_data_from_procedure(connection = connection,
+                                                proc_name = 'sp_reporte_cantidades_movimientos',
+                                                proc_params = {
+                                                    'p_deposito': p_depositos,
                                                     'p_fecha_desde': p_fecha_desde,
                                                     'p_fecha_hasta': p_fecha_hasta
                                                 })
         
         resultado['reporte_depositos'] = reporte_depositos
         resultado['reporte_por_deposito'] = reporte_por_deposito
+        resultado['cantidades_movimientos'] = reporte_cantidades
 
     except Exception as e:
         print(e)
