@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'super_mami_stock_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stockeanding',
-        'USER': 'admin',
-        'PASSWORD': 'Q1W2E3R4T5Y6!!',
-        'HOST': 'stockeanding.cbclozisgrlj.us-east-2.rds.amazonaws.com',
+        'NAME': 'SuperMamiStock_Dev',
+        'USER': 'web_app_user',
+        'PASSWORD': 'WebAppUser!!',
+        'HOST': '26.100.251.19',
         'PORT': '3306'
     }
 }
