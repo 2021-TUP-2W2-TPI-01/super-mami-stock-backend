@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-&y05%gvqzhs&-(@7lchfltqmy5qgg2v#q%a&6!a4zn_bmoyog%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://web-stockeanding.herokuapp.com']
 
 
 # Application definition
@@ -60,10 +60,10 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5500',
+    'https://web-stockeanding.herokuapp.com',
 ] # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://localhost:5500',
+    'https://web-stockeanding.herokuapp.com',
 ]
 
 ROOT_URLCONF = 'super_mami_stock_web.urls'
