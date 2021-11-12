@@ -20,9 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&y05%gvqzhs&-(@7lchfltqmy5qgg2v#q%a&6!a4zn_bmoyog%'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -93,10 +90,10 @@ WSGI_APPLICATION = 'super_mami_stock_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SuperMamiStock_Dev',
+        'NAME': 'stockeanding',
         'USER': 'web_app_user',
-        'PASSWORD': 'WebAppUser!!',
-        'HOST': '26.100.251.19',
+        'PASSWORD': 'StockeandingWeb!!',
+        'HOST': 'stockeanding.cbclozisgrlj.us-east-2.rds.amazonaws.com',
         'PORT': '3306'
     }
 }
