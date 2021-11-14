@@ -49,7 +49,7 @@ def obtener_traspasos_al_deposito(usuario):
                                                                                                                             'fh_generacion',
                                                                                                                             'id_deposito_origen__nombre',
                                                                                                                             'id_deposito_destino__nombre',
-                                                                                                                            'id_tipo_estado__descripcion')
+                                                                                                                            'id_tipo_estado__descripcion').order_by('id_tipo_estado','fh_generacion')
 
         for t in traspasos:
             
