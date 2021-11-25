@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'super_mami_stock_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SuperMamiStock_Dev',
+        'NAME': 'SuperMamiStock_Prd',
         'USER': 'web_app_user',
         'PASSWORD': 'WebAppUser!!',
         'HOST': '26.100.251.19',
