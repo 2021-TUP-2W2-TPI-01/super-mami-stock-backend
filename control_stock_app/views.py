@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
 from control_stock_app.controllers.tipos_estados_controller import obtener_tipos_estados
+from control_stock_app.utils.notifications import notificar_nuevo_traspaso, notificar_procesamiento_traspaso
 
 from .controllers.traspasos_controller import *
 from .serializers import *
@@ -639,6 +640,7 @@ def procesar_traspaso_confirmado(request, pk):
     try:
         
         if traspaso_confirmado(pk, request.user.id):
+            notificar_procesamiento_traspaso(pk)
             return Response('Registro exitoso', status=status.HTTP_200_OK)
         else:
             raise Exception
@@ -659,6 +661,7 @@ def procesar_traspaso_modificado(request, pk):
         traspaso.detalle_traspaso = eval(request.data['detalle_traspaso'])
 
         if traspaso_modificado(request.user.id, traspaso):
+            notificar_procesamiento_traspaso(pk)
             return Response('Registro exitoso', status=status.HTTP_200_OK)
         else:
             raise Exception
@@ -678,6 +681,7 @@ def procesar_traspaso_rechazado(request, pk):
         traspaso.observaciones = request.data['observaciones']
 
         if traspaso_rechazado(request.user.id, traspaso):
+            notificar_procesamiento_traspaso(pk)
             return Response('Traspaso rechazado', status=status.HTTP_200_OK)
         else:
             raise Exception
@@ -735,6 +739,7 @@ def insert_traspaso(request):
             detalle_traspaso = request.data['detalle_traspaso']
 
         if alta_traspaso(traspaso, detalle_traspaso):
+            notificar_nuevo_traspaso(traspaso)
             return Response('Traspaso realizado con éxito', status = status.HTTP_200_OK)
 
     
