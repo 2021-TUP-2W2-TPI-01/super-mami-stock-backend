@@ -59,6 +59,7 @@ class Depositos(models.Model):
 
 
 class DepositosUsuarios(models.Model):
+    # Agrego comment
     id_deposito = models.OneToOneField(Depositos, models.DO_NOTHING, db_column='id_deposito', primary_key=True)
     id_usuario = models.ForeignKey(User, models.DO_NOTHING, db_column='id_usuario')
 
