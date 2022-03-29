@@ -43,6 +43,7 @@ class Categorias(models.Model):
 
 
 class Depositos(models.Model):
+    # prueba del wehbook
     nombre = models.CharField(max_length=50, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=True, null=True)
     domicilio = models.CharField(max_length=50, blank=True, null=True)
